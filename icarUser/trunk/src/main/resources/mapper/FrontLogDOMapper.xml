@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.FrontLogDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.FrontLogDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="error_url" jdbcType="VARCHAR" property="error_url" />
+    <result column="error_msg" jdbcType="VARCHAR" property="error_msg" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmt_create" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmt_modified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, error_url, error_msg, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.FrontLogDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from icar_front_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from icar_front_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from icar_front_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.FrontLogDOExample">
+    delete from icar_front_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.FrontLogDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into icar_front_log (id, error_url, error_msg, 
+      gmt_create, gmt_modified)
+    values (#{id,jdbcType=BIGINT}, #{error_url,jdbcType=VARCHAR}, #{error_msg,jdbcType=VARCHAR}, 
+      #{gmt_create,jdbcType=TIMESTAMP}, #{gmt_modified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.FrontLogDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into icar_front_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="error_url != null">
+        error_url,
+      </if>
+      <if test="error_msg != null">
+        error_msg,
+      </if>
+      <if test="gmt_create != null">
+        gmt_create,
+      </if>
+      <if test="gmt_modified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="error_url != null">
+        #{error_url,jdbcType=VARCHAR},
+      </if>
+      <if test="error_msg != null">
+        #{error_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="gmt_create != null">
+        #{gmt_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmt_modified != null">
+        #{gmt_modified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.FrontLogDOExample" resultType="java.lang.Long">
+    select count(*) from icar_front_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update icar_front_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.error_url != null">
+        error_url = #{record.error_url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.error_msg != null">
+        error_msg = #{record.error_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmt_create != null">
+        gmt_create = #{record.gmt_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmt_modified != null">
+        gmt_modified = #{record.gmt_modified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update icar_front_log
+    set id = #{record.id,jdbcType=BIGINT},
+      error_url = #{record.error_url,jdbcType=VARCHAR},
+      error_msg = #{record.error_msg,jdbcType=VARCHAR},
+      gmt_create = #{record.gmt_create,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmt_modified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.FrontLogDO">
+    update icar_front_log
+    <set>
+      <if test="error_url != null">
+        error_url = #{error_url,jdbcType=VARCHAR},
+      </if>
+      <if test="error_msg != null">
+        error_msg = #{error_msg,jdbcType=VARCHAR},
+      </if>
+      <if test="gmt_create != null">
+        gmt_create = #{gmt_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmt_modified != null">
+        gmt_modified = #{gmt_modified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.FrontLogDO">
+    update icar_front_log
+    set error_url = #{error_url,jdbcType=VARCHAR},
+      error_msg = #{error_msg,jdbcType=VARCHAR},
+      gmt_create = #{gmt_create,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmt_modified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

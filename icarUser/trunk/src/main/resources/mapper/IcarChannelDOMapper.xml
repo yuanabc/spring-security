@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.IcarChannelDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.IcarChannelDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="companyId" jdbcType="INTEGER" property="companyId" />
+    <result column="comcodes" jdbcType="VARCHAR" property="comcodes" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="companyCode" jdbcType="VARCHAR" property="companyCode" />
+    <result column="userCode" jdbcType="VARCHAR" property="userCode" />
+    <result column="taxName" jdbcType="VARCHAR" property="taxName" />
+    <result column="taxCode" jdbcType="VARCHAR" property="taxCode" />
+    <result column="voucherNo" jdbcType="VARCHAR" property="voucherNo" />
+    <result column="serviceCode" jdbcType="VARCHAR" property="serviceCode" />
+    <result column="orgCode" jdbcType="VARCHAR" property="orgCode" />
+    <result column="managersCode" jdbcType="VARCHAR" property="managersCode" />
+    <result column="cityId" jdbcType="INTEGER" property="cityId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="times" jdbcType="BIGINT" property="times" />
+    <result column="explains" jdbcType="VARCHAR" property="explains" />
+    <result column="sourceId" jdbcType="VARCHAR" property="sourceId" />
+    <result column="isShow" jdbcType="TINYINT" property="isShow" />
+    <result column="del" jdbcType="INTEGER" property="del" />
+    <result column="field01" jdbcType="VARCHAR" property="field01" />
+    <result column="field02" jdbcType="VARCHAR" property="field02" />
+    <result column="field03" jdbcType="VARCHAR" property="field03" />
+    <result column="field04" jdbcType="VARCHAR" property="field04" />
+    <result column="field05" jdbcType="VARCHAR" property="field05" />
+    <result column="field06" jdbcType="VARCHAR" property="field06" />
+    <result column="field07" jdbcType="VARCHAR" property="field07" />
+    <result column="areaCode" jdbcType="INTEGER" property="areaCode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, companyId, comcodes, account, pwd, companyCode, userCode, taxName, taxCode, voucherNo, 
+    serviceCode, orgCode, managersCode, cityId, type, times, explains, sourceId, isShow, 
+    del, field01, field02, field03, field04, field05, field06, field07, areaCode
+  </sql>
+  <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ic_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ic_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ic_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDOExample">
+    delete from ic_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_channel (id, companyId, comcodes, 
+      account, pwd, companyCode, 
+      userCode, taxName, taxCode, 
+      voucherNo, serviceCode, orgCode, 
+      managersCode, cityId, type, 
+      times, explains, sourceId, 
+      isShow, del, field01, 
+      field02, field03, field04, 
+      field05, field06, field07, 
+      areaCode)
+    values (#{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{comcodes,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, 
+      #{userCode,jdbcType=VARCHAR}, #{taxName,jdbcType=VARCHAR}, #{taxCode,jdbcType=VARCHAR}, 
+      #{voucherNo,jdbcType=VARCHAR}, #{serviceCode,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, 
+      #{managersCode,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{times,jdbcType=BIGINT}, #{explains,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+      #{isShow,jdbcType=TINYINT}, #{del,jdbcType=INTEGER}, #{field01,jdbcType=VARCHAR}, 
+      #{field02,jdbcType=VARCHAR}, #{field03,jdbcType=VARCHAR}, #{field04,jdbcType=VARCHAR}, 
+      #{field05,jdbcType=VARCHAR}, #{field06,jdbcType=VARCHAR}, #{field07,jdbcType=VARCHAR}, 
+      #{areaCode,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_channel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="companyId != null">
+        companyId,
+      </if>
+      <if test="comcodes != null">
+        comcodes,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="companyCode != null">
+        companyCode,
+      </if>
+      <if test="userCode != null">
+        userCode,
+      </if>
+      <if test="taxName != null">
+        taxName,
+      </if>
+      <if test="taxCode != null">
+        taxCode,
+      </if>
+      <if test="voucherNo != null">
+        voucherNo,
+      </if>
+      <if test="serviceCode != null">
+        serviceCode,
+      </if>
+      <if test="orgCode != null">
+        orgCode,
+      </if>
+      <if test="managersCode != null">
+        managersCode,
+      </if>
+      <if test="cityId != null">
+        cityId,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="times != null">
+        times,
+      </if>
+      <if test="explains != null">
+        explains,
+      </if>
+      <if test="sourceId != null">
+        sourceId,
+      </if>
+      <if test="isShow != null">
+        isShow,
+      </if>
+      <if test="del != null">
+        del,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="areaCode != null">
+        areaCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=INTEGER},
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="comcodes != null">
+        #{comcodes,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCode != null">
+        #{companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxName != null">
+        #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxCode != null">
+        #{taxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherNo != null">
+        #{voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceCode != null">
+        #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="managersCode != null">
+        #{managersCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="times != null">
+        #{times,jdbcType=BIGINT},
+      </if>
+      <if test="explains != null">
+        #{explains,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null">
+        #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null">
+        #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="del != null">
+        #{del,jdbcType=INTEGER},
+      </if>
+      <if test="field01 != null">
+        #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null">
+        #{field02,jdbcType=VARCHAR},
+      </if>
+      <if test="field03 != null">
+        #{field03,jdbcType=VARCHAR},
+      </if>
+      <if test="field04 != null">
+        #{field04,jdbcType=VARCHAR},
+      </if>
+      <if test="field05 != null">
+        #{field05,jdbcType=VARCHAR},
+      </if>
+      <if test="field06 != null">
+        #{field06,jdbcType=VARCHAR},
+      </if>
+      <if test="field07 != null">
+        #{field07,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDOExample" resultType="java.lang.Long">
+    select count(*) from ic_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ic_channel
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyId != null">
+        companyId = #{record.companyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.comcodes != null">
+        comcodes = #{record.comcodes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.account != null">
+        account = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pwd != null">
+        pwd = #{record.pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyCode != null">
+        companyCode = #{record.companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCode != null">
+        userCode = #{record.userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxName != null">
+        taxName = #{record.taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taxCode != null">
+        taxCode = #{record.taxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.voucherNo != null">
+        voucherNo = #{record.voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceCode != null">
+        serviceCode = #{record.serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgCode != null">
+        orgCode = #{record.orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managersCode != null">
+        managersCode = #{record.managersCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityId != null">
+        cityId = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.times != null">
+        times = #{record.times,jdbcType=BIGINT},
+      </if>
+      <if test="record.explains != null">
+        explains = #{record.explains,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceId != null">
+        sourceId = #{record.sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isShow != null">
+        isShow = #{record.isShow,jdbcType=TINYINT},
+      </if>
+      <if test="record.del != null">
+        del = #{record.del,jdbcType=INTEGER},
+      </if>
+      <if test="record.field01 != null">
+        field01 = #{record.field01,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field02 != null">
+        field02 = #{record.field02,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field03 != null">
+        field03 = #{record.field03,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field04 != null">
+        field04 = #{record.field04,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field05 != null">
+        field05 = #{record.field05,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field06 != null">
+        field06 = #{record.field06,jdbcType=VARCHAR},
+      </if>
+      <if test="record.field07 != null">
+        field07 = #{record.field07,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaCode != null">
+        areaCode = #{record.areaCode,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ic_channel
+    set id = #{record.id,jdbcType=INTEGER},
+      companyId = #{record.companyId,jdbcType=INTEGER},
+      comcodes = #{record.comcodes,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=VARCHAR},
+      pwd = #{record.pwd,jdbcType=VARCHAR},
+      companyCode = #{record.companyCode,jdbcType=VARCHAR},
+      userCode = #{record.userCode,jdbcType=VARCHAR},
+      taxName = #{record.taxName,jdbcType=VARCHAR},
+      taxCode = #{record.taxCode,jdbcType=VARCHAR},
+      voucherNo = #{record.voucherNo,jdbcType=VARCHAR},
+      serviceCode = #{record.serviceCode,jdbcType=VARCHAR},
+      orgCode = #{record.orgCode,jdbcType=VARCHAR},
+      managersCode = #{record.managersCode,jdbcType=VARCHAR},
+      cityId = #{record.cityId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      times = #{record.times,jdbcType=BIGINT},
+      explains = #{record.explains,jdbcType=VARCHAR},
+      sourceId = #{record.sourceId,jdbcType=VARCHAR},
+      isShow = #{record.isShow,jdbcType=TINYINT},
+      del = #{record.del,jdbcType=INTEGER},
+      field01 = #{record.field01,jdbcType=VARCHAR},
+      field02 = #{record.field02,jdbcType=VARCHAR},
+      field03 = #{record.field03,jdbcType=VARCHAR},
+      field04 = #{record.field04,jdbcType=VARCHAR},
+      field05 = #{record.field05,jdbcType=VARCHAR},
+      field06 = #{record.field06,jdbcType=VARCHAR},
+      field07 = #{record.field07,jdbcType=VARCHAR},
+      areaCode = #{record.areaCode,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDO">
+    update ic_channel
+    <set>
+      <if test="companyId != null">
+        companyId = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="comcodes != null">
+        comcodes = #{comcodes,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCode != null">
+        companyCode = #{companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        userCode = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxName != null">
+        taxName = #{taxName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxCode != null">
+        taxCode = #{taxCode,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherNo != null">
+        voucherNo = #{voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceCode != null">
+        serviceCode = #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null">
+        orgCode = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="managersCode != null">
+        managersCode = #{managersCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        cityId = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="times != null">
+        times = #{times,jdbcType=BIGINT},
+      </if>
+      <if test="explains != null">
+        explains = #{explains,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null">
+        sourceId = #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null">
+        isShow = #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="del != null">
+        del = #{del,jdbcType=INTEGER},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01,jdbcType=VARCHAR},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02,jdbcType=VARCHAR},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03,jdbcType=VARCHAR},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04,jdbcType=VARCHAR},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05,jdbcType=VARCHAR},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06,jdbcType=VARCHAR},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        areaCode = #{areaCode,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.IcarChannelDO">
+    update ic_channel
+    set companyId = #{companyId,jdbcType=INTEGER},
+      comcodes = #{comcodes,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      companyCode = #{companyCode,jdbcType=VARCHAR},
+      userCode = #{userCode,jdbcType=VARCHAR},
+      taxName = #{taxName,jdbcType=VARCHAR},
+      taxCode = #{taxCode,jdbcType=VARCHAR},
+      voucherNo = #{voucherNo,jdbcType=VARCHAR},
+      serviceCode = #{serviceCode,jdbcType=VARCHAR},
+      orgCode = #{orgCode,jdbcType=VARCHAR},
+      managersCode = #{managersCode,jdbcType=VARCHAR},
+      cityId = #{cityId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      times = #{times,jdbcType=BIGINT},
+      explains = #{explains,jdbcType=VARCHAR},
+      sourceId = #{sourceId,jdbcType=VARCHAR},
+      isShow = #{isShow,jdbcType=TINYINT},
+      del = #{del,jdbcType=INTEGER},
+      field01 = #{field01,jdbcType=VARCHAR},
+      field02 = #{field02,jdbcType=VARCHAR},
+      field03 = #{field03,jdbcType=VARCHAR},
+      field04 = #{field04,jdbcType=VARCHAR},
+      field05 = #{field05,jdbcType=VARCHAR},
+      field06 = #{field06,jdbcType=VARCHAR},
+      field07 = #{field07,jdbcType=VARCHAR},
+      areaCode = #{areaCode,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.PingAnOrderDOMapper">
+    <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.PingAnOrderDO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="userId" jdbcType="VARCHAR" property="userId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="licenseNo" jdbcType="VARCHAR" property="licenseNo"/>
+        <result column="orderNo" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="tciPolicyNo" jdbcType="VARCHAR" property="tciPolicyNo"/>
+        <result column="vciPolicyNo" jdbcType="VARCHAR" property="vciPolicyNo"/>
+        <result column="totalPremium" jdbcType="DOUBLE" property="totalPremium"/>
+        <result column="tciPremium" jdbcType="DOUBLE" property="tciPremium"/>
+        <result column="tax" jdbcType="DOUBLE" property="tax"/>
+        <result column="vciPremium" jdbcType="DOUBLE" property="vciPremium"/>
+        <result column="createDate" jdbcType="BIGINT" property="createDate"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, userId, name, licenseNo, orderNo, tciPolicyNo, vciPolicyNo, totalPremium, tciPremium,
+        tax, vciPremium, createDate, status
+    </sql>
+    <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDOExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from ic_order_pingan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ic_order_pingan
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ic_order_pingan
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDOExample">
+        delete from ic_order_pingan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ic_order_pingan (id, userId, name,
+        licenseNo, orderNo, tciPolicyNo,
+        vciPolicyNo, totalPremium, tciPremium,
+        tax, vciPremium, createDate,
+        status)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{licenseNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{tciPolicyNo,jdbcType=VARCHAR},
+        #{vciPolicyNo,jdbcType=VARCHAR}, #{totalPremium,jdbcType=DOUBLE}, #{tciPremium,jdbcType=DOUBLE},
+        #{tax,jdbcType=DOUBLE}, #{vciPremium,jdbcType=DOUBLE}, #{createDate,jdbcType=BIGINT},
+        #{status,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDO">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ic_order_pingan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="licenseNo != null">
+                licenseNo,
+            </if>
+            <if test="orderNo != null">
+                orderNo,
+            </if>
+            <if test="tciPolicyNo != null">
+                tciPolicyNo,
+            </if>
+            <if test="vciPolicyNo != null">
+                vciPolicyNo,
+            </if>
+            <if test="totalPremium != null">
+                totalPremium,
+            </if>
+            <if test="tciPremium != null">
+                tciPremium,
+            </if>
+            <if test="tax != null">
+                tax,
+            </if>
+            <if test="vciPremium != null">
+                vciPremium,
+            </if>
+            <if test="createDate != null">
+                createDate,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=INTEGER},
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="licenseNo != null">
+                #{licenseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tciPolicyNo != null">
+                #{tciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="vciPolicyNo != null">
+                #{vciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="totalPremium != null">
+                #{totalPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="tciPremium != null">
+                #{tciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="tax != null">
+                #{tax,jdbcType=DOUBLE},
+            </if>
+            <if test="vciPremium != null">
+                #{vciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDOExample"
+            resultType="java.lang.Long">
+        select count(*) from ic_order_pingan
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update ic_order_pingan
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                userId = #{record.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.licenseNo != null">
+                licenseNo = #{record.licenseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderNo != null">
+                orderNo = #{record.orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tciPolicyNo != null">
+                tciPolicyNo = #{record.tciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vciPolicyNo != null">
+                vciPolicyNo = #{record.vciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalPremium != null">
+                totalPremium = #{record.totalPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="record.tciPremium != null">
+                tciPremium = #{record.tciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="record.tax != null">
+                tax = #{record.tax,jdbcType=DOUBLE},
+            </if>
+            <if test="record.vciPremium != null">
+                vciPremium = #{record.vciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="record.createDate != null">
+                createDate = #{record.createDate,jdbcType=BIGINT},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=TINYINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update ic_order_pingan
+        set id = #{record.id,jdbcType=INTEGER},
+        userId = #{record.userId,jdbcType=VARCHAR},
+        name = #{record.name,jdbcType=VARCHAR},
+        licenseNo = #{record.licenseNo,jdbcType=VARCHAR},
+        orderNo = #{record.orderNo,jdbcType=VARCHAR},
+        tciPolicyNo = #{record.tciPolicyNo,jdbcType=VARCHAR},
+        vciPolicyNo = #{record.vciPolicyNo,jdbcType=VARCHAR},
+        totalPremium = #{record.totalPremium,jdbcType=DOUBLE},
+        tciPremium = #{record.tciPremium,jdbcType=DOUBLE},
+        tax = #{record.tax,jdbcType=DOUBLE},
+        vciPremium = #{record.vciPremium,jdbcType=DOUBLE},
+        createDate = #{record.createDate,jdbcType=BIGINT},
+        status = #{record.status,jdbcType=TINYINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDO">
+        update ic_order_pingan
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="licenseNo != null">
+                licenseNo = #{licenseNo,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                orderNo = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tciPolicyNo != null">
+                tciPolicyNo = #{tciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="vciPolicyNo != null">
+                vciPolicyNo = #{vciPolicyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="totalPremium != null">
+                totalPremium = #{totalPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="tciPremium != null">
+                tciPremium = #{tciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="tax != null">
+                tax = #{tax,jdbcType=DOUBLE},
+            </if>
+            <if test="vciPremium != null">
+                vciPremium = #{vciPremium,jdbcType=DOUBLE},
+            </if>
+            <if test="createDate != null">
+                createDate = #{createDate,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.PingAnOrderDO">
+        update ic_order_pingan
+        set userId = #{userId,jdbcType=VARCHAR},
+          name = #{name,jdbcType=VARCHAR},
+          licenseNo = #{licenseNo,jdbcType=VARCHAR},
+          orderNo = #{orderNo,jdbcType=VARCHAR},
+          tciPolicyNo = #{tciPolicyNo,jdbcType=VARCHAR},
+          vciPolicyNo = #{vciPolicyNo,jdbcType=VARCHAR},
+          totalPremium = #{totalPremium,jdbcType=DOUBLE},
+          tciPremium = #{tciPremium,jdbcType=DOUBLE},
+          tax = #{tax,jdbcType=DOUBLE},
+          vciPremium = #{vciPremium,jdbcType=DOUBLE},
+          createDate = #{createDate,jdbcType=BIGINT},
+          status = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

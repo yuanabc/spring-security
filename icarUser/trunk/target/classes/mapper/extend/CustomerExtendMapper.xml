@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.extend.CustomerExtendMapper">
+    <!-- 我的业绩返回结果 -->
+    <resultMap id="CustomerResultMap" type="com.ybinsure.icar.user.model.vo.CustomerVO">
+        <result column="id" jdbcType="INTEGER" property="customerId"/>
+        <result column="forceEndDate" jdbcType="DATE" property="tciEndDate"/>
+        <result column="comEndDate" jdbcType="DATE" property="vciEndDate"/>
+        <result column="licenseNo" jdbcType="VARCHAR" property="licenseNo"/>
+        <result column="name" jdbcType="VARCHAR" property="ownerName"/>
+        <result column="phone" jdbcType="BIGINT" property="ownerPhone"/>
+        <result column="vinNo" jdbcType="VARCHAR" property="frameNo"/>
+        <result column="modelName" jdbcType="VARCHAR" property="brandName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <select id="selectCustomers" parameterType="map" resultMap="CustomerResultMap">
+        SELECT
+            t.id,
+            t.forceEndDate,
+            t.comEndDate,
+            t.licenseNo,
+            t.`name`,
+            t.phone
+        FROM
+            ic_customer t
+        WHERE t.del = 0
+        AND t.salesmanId = #{record.userId}
+        <if test="record.ownerName != null">
+            <bind name="pattern" value="record.ownerName + '%'" />
+            AND t.`name` LIKE #{pattern}
+        </if>
+        <if test="record.licenseNo != null">
+            <bind name="pattern" value="record.licenseNo + '%'" />
+            AND t.licenseNo LIKE #{pattern}
+        </if>
+        <if test="record.dueDay != null">
+            AND (
+                t.comEndDate BETWEEN #{record.today} AND #{record.dueDay}
+                OR
+                t.forceEndDate BETWEEN #{record.today} AND #{record.dueDay}
+            )
+        </if>
+    </select>
+
+    <select id="checkCustomer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM ic_customer c
+        WHERE c.del = 0
+        AND c.salesmanId = #{record.salesmanId}
+        AND c.licenseNo = #{record.licenseNo}
+        <if test="record.vinNo != null">
+            AND c.vinNo = #{record.vinNo}
+        </if>
+    </select>
+
+</mapper>

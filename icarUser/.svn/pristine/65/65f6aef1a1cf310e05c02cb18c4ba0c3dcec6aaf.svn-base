@@ -1,0 +1,30 @@
+package com.ybinsure.icar.user.mapper.data;
+
+import com.ybinsure.icar.user.model.data.CustomerDO;
+import com.ybinsure.icar.user.model.data.CustomerDOExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface CustomerDOMapper {
+    long countByExample(CustomerDOExample example);
+
+    int deleteByExample(CustomerDOExample example);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(CustomerDO record);
+
+    int insertSelective(CustomerDO record);
+
+    List<CustomerDO> selectByExample(CustomerDOExample example);
+
+    CustomerDO selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") CustomerDO record, @Param("example") CustomerDOExample example);
+
+    int updateByExample(@Param("record") CustomerDO record, @Param("example") CustomerDOExample example);
+
+    int updateByPrimaryKeySelective(CustomerDO record);
+
+    int updateByPrimaryKey(CustomerDO record);
+}

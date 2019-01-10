@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.FeedbackDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.FeedbackDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uId" jdbcType="VARCHAR" property="uId" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="operationId" jdbcType="VARCHAR" property="operationId" />
+    <result column="replyTime" jdbcType="TIMESTAMP" property="replyTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="isDel" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ybinsure.icar.user.model.data.FeedbackDO">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="reply" jdbcType="LONGVARCHAR" property="reply" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, uId, createTime, type, operationId, replyTime, status, isDel
+  </sql>
+  <sql id="Blob_Column_List">
+    content, reply
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.ybinsure.icar.user.model.data.FeedbackDOExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ic_feedback
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.FeedbackDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ic_feedback
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ic_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ic_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.FeedbackDOExample">
+    delete from ic_feedback
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.FeedbackDO">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_feedback (id, uId, createTime, 
+      type, operationId, replyTime, 
+      status, isDel, content, 
+      reply)
+    values (#{id,jdbcType=INTEGER}, #{uId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=TINYINT}, #{operationId,jdbcType=VARCHAR}, #{replyTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{isDel,jdbcType=TINYINT}, #{content,jdbcType=LONGVARCHAR}, 
+      #{reply,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.FeedbackDO">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="uId != null">
+        uId,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="operationId != null">
+        operationId,
+      </if>
+      <if test="replyTime != null">
+        replyTime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isDel != null">
+        isDel,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="reply != null">
+        reply,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=INTEGER},
+      <if test="uId != null">
+        #{uId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="operationId != null">
+        #{operationId,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reply != null">
+        #{reply,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.FeedbackDOExample" resultType="java.lang.Long">
+    select count(*) from ic_feedback
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ic_feedback
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uId != null">
+        uId = #{record.uId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.operationId != null">
+        operationId = #{record.operationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyTime != null">
+        replyTime = #{record.replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDel != null">
+        isDel = #{record.isDel,jdbcType=TINYINT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.reply != null">
+        reply = #{record.reply,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update ic_feedback
+    set id = #{record.id,jdbcType=INTEGER},
+      uId = #{record.uId,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=TINYINT},
+      operationId = #{record.operationId,jdbcType=VARCHAR},
+      replyTime = #{record.replyTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isDel = #{record.isDel,jdbcType=TINYINT},
+      content = #{record.content,jdbcType=LONGVARCHAR},
+      reply = #{record.reply,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ic_feedback
+    set id = #{record.id,jdbcType=INTEGER},
+      uId = #{record.uId,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=TINYINT},
+      operationId = #{record.operationId,jdbcType=VARCHAR},
+      replyTime = #{record.replyTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=TINYINT},
+      isDel = #{record.isDel,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.FeedbackDO">
+    update ic_feedback
+    <set>
+      <if test="uId != null">
+        uId = #{uId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="operationId != null">
+        operationId = #{operationId,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        replyTime = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDel != null">
+        isDel = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reply != null">
+        reply = #{reply,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ybinsure.icar.user.model.data.FeedbackDO">
+    update ic_feedback
+    set uId = #{uId,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=TINYINT},
+      operationId = #{operationId,jdbcType=VARCHAR},
+      replyTime = #{replyTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDel = #{isDel,jdbcType=TINYINT},
+      content = #{content,jdbcType=LONGVARCHAR},
+      reply = #{reply,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.FeedbackDO">
+    update ic_feedback
+    set uId = #{uId,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=TINYINT},
+      operationId = #{operationId,jdbcType=VARCHAR},
+      replyTime = #{replyTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      isDel = #{isDel,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- mysql 驱动 -->
+    <classPathEntry location="D:/Repository/mysql/mysql-connector-java/5.1.45/mysql-connector-java-5.1.45.jar"/>
+    <!-- targetRuntime="MyBatis3Simple"可不生成Example -->
+    <context id="mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；
+            一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖
+         -->
+        <property name="autoDelimitKeywords" value="false"/>
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化java代码 -->
+        <!--<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>-->
+        <!-- 格式化XML代码 -->
+        <!--<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>-->
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 配置生成toString()方法 -->
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />-->
+
+        <!-- 生成的pojo，将implements Serializable-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+        <!-- 添加注释 -->
+        <commentGenerator type="com.ybinsure.icar.user.mybatis.MyCommentGenerator">
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://120.27.21.67:13306/icar3"
+                        userId="icar2"
+                        password="cxMysql171027yBcX">
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
+                        userId="root"
+                        password="123456">
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>-->
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，
+            为 true时把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <!--
+                true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
+                false：默认,
+                    scale>0;length>18：使用BigDecimal;
+                    scale=0;length[10,18]：使用Long；
+                    scale=0;length[5,9]：使用Integer；
+                    scale=0;length<5：使用Short；
+             -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成java实体对象配置 -->
+        <javaModelGenerator targetPackage="com.ybinsure.icar.user.model.data"
+                            targetProject="src/main/java">
+            <!-- 是否trim -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper.xml生成位置 -->
+        <sqlMapGenerator targetPackage="/"
+                         targetProject="src/main/resources/mapper/"/>
+
+        <!-- mapper接口生成的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.ybinsure.icar.user.mapper.data"
+                             targetProject="src/main/java"/>
+
+        <!--<table tableName="auth_user" domainObjectName="UserDO">-->
+            <!-- 注意，该属性只针对MyBatis3Simple有用；
+                如果选择的runtime是MyBatis3Simple，那么会生成一个SelectAll方法，如果指定了selectAllOrderByClause，那么会在该SQL中添加指定的这个order条件；
+             -->
+            <!--<property name="selectAllOrderByClause" value="age desc,username asc"/>-->
+            <!-- 如果为true，会使用数据库列名作为实体对象的属性；如果为false，会尝试将数据库列名转换为驼峰形式 -->
+            <!--<property name="useActualColumnNames" value="fasle"/>-->
+            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+            <!-- 可以替换列名 -->
+            <!--<columnRenamingRule searchString="^CUST_" replaceString="" />-->
+            <!-- 设置列属性值的类型 -->
+            <!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INT"/>
+            <columnOverride column="uId" javaType="java.lang.Long" jdbcType="INT"/>-->
+            <!-- 屏蔽不需要生成的列，delimitedColumnName:匹配列名的时候是否区分大小写 -->
+            <!--<ignoreColumn column="rate" delimitedColumnName="true"/>
+            <ignoreColumn column="issueUserId" delimitedColumnName="true"/>
+            <ignoreColumn column="modifyTime" delimitedColumnName="true"/>
+            <ignoreColumn column="grantTime" delimitedColumnName="true"/>
+            <ignoreColumn column="state" delimitedColumnName="true"/>
+            <ignoreColumn column="del" delimitedColumnName="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="auth_channel" domainObjectName="ChannelDO">
+            <generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />
+        </table>
+        <table tableName="auth_company" domainObjectName="CompanyDO">
+            <generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />
+        </table>-->
+        <!-- 保单表 -->
+        <!--<table tableName="icar_policy" domainObjectName="PolicyDO">
+            <generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />
+        </table>-->
+        <!--<table tableName="icar_policy_applicant" domainObjectName="PolicyApplicantDO">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="icar_policy_risk" domainObjectName="PolicyRiskDO">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="icar_policy_vehicle" domainObjectName="PolicyVehicleDO">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>-->
+
+        <!--<table tableName="ic_address" domainObjectName="AddressDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_uid" delimitedColumnName="true"/>
+        </table>
+        <table tableName="ic_feedback" domainObjectName="FeedbackDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_uId" delimitedColumnName="true"/>
+            <ignoreColumn column="old_operationId" delimitedColumnName="true"/>
+        </table>
+        <table tableName="ic_customer" domainObjectName="CustomerDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_salesmanId" delimitedColumnName="true"/>
+        </table>
+        <table tableName="ic_file" domainObjectName="FileDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_userid" delimitedColumnName="true"/>
+        </table>
+        <table tableName="ic_msg" domainObjectName="MessageDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_sid" delimitedColumnName="true"/>
+            <ignoreColumn column="old_receiveId" delimitedColumnName="true"/>
+        </table>-->
+        <!--<table tableName="ic_channel" domainObjectName="IcarChannelDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="ic_sys_log" domainObjectName="IcarSysLogDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>-->
+        <table tableName="ic_order_pingan" domainObjectName="PingAnOrderDO">
+            <property name="useActualColumnNames" value="true"/>
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <ignoreColumn column="old_userId" delimitedColumnName="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

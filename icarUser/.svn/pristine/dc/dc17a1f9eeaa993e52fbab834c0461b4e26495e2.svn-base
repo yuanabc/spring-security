@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.PolicyApplicantDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.PolicyApplicantDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="policy_id" jdbcType="VARCHAR" property="policyId" />
+    <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+    <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
+    <result column="owner_id_type" jdbcType="VARCHAR" property="ownerIdType" />
+    <result column="owner_id_no" jdbcType="VARCHAR" property="ownerIdNo" />
+    <result column="owner_addr" jdbcType="VARCHAR" property="ownerAddr" />
+    <result column="owner_birthday" jdbcType="DATE" property="ownerBirthday" />
+    <result column="owner_sex" jdbcType="TINYINT" property="ownerSex" />
+    <result column="owner_email" jdbcType="VARCHAR" property="ownerEmail" />
+    <result column="holder_name" jdbcType="VARCHAR" property="holderName" />
+    <result column="holder_phone" jdbcType="VARCHAR" property="holderPhone" />
+    <result column="holder_id_type" jdbcType="VARCHAR" property="holderIdType" />
+    <result column="holder_id_no" jdbcType="VARCHAR" property="holderIdNo" />
+    <result column="holder_addr" jdbcType="VARCHAR" property="holderAddr" />
+    <result column="holder_birthday" jdbcType="DATE" property="holderBirthday" />
+    <result column="holder_sex" jdbcType="TINYINT" property="holderSex" />
+    <result column="insured_name" jdbcType="VARCHAR" property="insuredName" />
+    <result column="insured_phone" jdbcType="VARCHAR" property="insuredPhone" />
+    <result column="insured_id_type" jdbcType="VARCHAR" property="insuredIdType" />
+    <result column="insured_id_no" jdbcType="VARCHAR" property="insuredIdNo" />
+    <result column="insured_addr" jdbcType="VARCHAR" property="insuredAddr" />
+    <result column="insured_birthday" jdbcType="DATE" property="insuredBirthday" />
+    <result column="insured_sex" jdbcType="TINYINT" property="insuredSex" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, policy_id, owner_name, owner_phone, owner_id_type, owner_id_no, owner_addr, owner_birthday, 
+    owner_sex, owner_email, holder_name, holder_phone, holder_id_type, holder_id_no, 
+    holder_addr, holder_birthday, holder_sex, insured_name, insured_phone, insured_id_type, 
+    insured_id_no, insured_addr, insured_birthday, insured_sex
+  </sql>
+  <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from icar_policy_applicant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from icar_policy_applicant
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from icar_policy_applicant
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDOExample">
+    delete from icar_policy_applicant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into icar_policy_applicant (id, policy_id, owner_name, 
+      owner_phone, owner_id_type, owner_id_no, 
+      owner_addr, owner_birthday, owner_sex, 
+      owner_email, holder_name, holder_phone, 
+      holder_id_type, holder_id_no, holder_addr, 
+      holder_birthday, holder_sex, insured_name, 
+      insured_phone, insured_id_type, insured_id_no, 
+      insured_addr, insured_birthday, insured_sex
+      )
+    values (#{id,jdbcType=BIGINT}, #{policyId,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, 
+      #{ownerPhone,jdbcType=VARCHAR}, #{ownerIdType,jdbcType=VARCHAR}, #{ownerIdNo,jdbcType=VARCHAR}, 
+      #{ownerAddr,jdbcType=VARCHAR}, #{ownerBirthday,jdbcType=DATE}, #{ownerSex,jdbcType=TINYINT}, 
+      #{ownerEmail,jdbcType=VARCHAR}, #{holderName,jdbcType=VARCHAR}, #{holderPhone,jdbcType=VARCHAR}, 
+      #{holderIdType,jdbcType=VARCHAR}, #{holderIdNo,jdbcType=VARCHAR}, #{holderAddr,jdbcType=VARCHAR}, 
+      #{holderBirthday,jdbcType=DATE}, #{holderSex,jdbcType=TINYINT}, #{insuredName,jdbcType=VARCHAR}, 
+      #{insuredPhone,jdbcType=VARCHAR}, #{insuredIdType,jdbcType=VARCHAR}, #{insuredIdNo,jdbcType=VARCHAR}, 
+      #{insuredAddr,jdbcType=VARCHAR}, #{insuredBirthday,jdbcType=DATE}, #{insuredSex,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into icar_policy_applicant
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="ownerName != null">
+        owner_name,
+      </if>
+      <if test="ownerPhone != null">
+        owner_phone,
+      </if>
+      <if test="ownerIdType != null">
+        owner_id_type,
+      </if>
+      <if test="ownerIdNo != null">
+        owner_id_no,
+      </if>
+      <if test="ownerAddr != null">
+        owner_addr,
+      </if>
+      <if test="ownerBirthday != null">
+        owner_birthday,
+      </if>
+      <if test="ownerSex != null">
+        owner_sex,
+      </if>
+      <if test="ownerEmail != null">
+        owner_email,
+      </if>
+      <if test="holderName != null">
+        holder_name,
+      </if>
+      <if test="holderPhone != null">
+        holder_phone,
+      </if>
+      <if test="holderIdType != null">
+        holder_id_type,
+      </if>
+      <if test="holderIdNo != null">
+        holder_id_no,
+      </if>
+      <if test="holderAddr != null">
+        holder_addr,
+      </if>
+      <if test="holderBirthday != null">
+        holder_birthday,
+      </if>
+      <if test="holderSex != null">
+        holder_sex,
+      </if>
+      <if test="insuredName != null">
+        insured_name,
+      </if>
+      <if test="insuredPhone != null">
+        insured_phone,
+      </if>
+      <if test="insuredIdType != null">
+        insured_id_type,
+      </if>
+      <if test="insuredIdNo != null">
+        insured_id_no,
+      </if>
+      <if test="insuredAddr != null">
+        insured_addr,
+      </if>
+      <if test="insuredBirthday != null">
+        insured_birthday,
+      </if>
+      <if test="insuredSex != null">
+        insured_sex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="policyId != null">
+        #{policyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null">
+        #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerPhone != null">
+        #{ownerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdType != null">
+        #{ownerIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdNo != null">
+        #{ownerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerAddr != null">
+        #{ownerAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerBirthday != null">
+        #{ownerBirthday,jdbcType=DATE},
+      </if>
+      <if test="ownerSex != null">
+        #{ownerSex,jdbcType=TINYINT},
+      </if>
+      <if test="ownerEmail != null">
+        #{ownerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="holderName != null">
+        #{holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderPhone != null">
+        #{holderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="holderIdType != null">
+        #{holderIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="holderIdNo != null">
+        #{holderIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="holderAddr != null">
+        #{holderAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="holderBirthday != null">
+        #{holderBirthday,jdbcType=DATE},
+      </if>
+      <if test="holderSex != null">
+        #{holderSex,jdbcType=TINYINT},
+      </if>
+      <if test="insuredName != null">
+        #{insuredName,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPhone != null">
+        #{insuredPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredIdType != null">
+        #{insuredIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredIdNo != null">
+        #{insuredIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredAddr != null">
+        #{insuredAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredBirthday != null">
+        #{insuredBirthday,jdbcType=DATE},
+      </if>
+      <if test="insuredSex != null">
+        #{insuredSex,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDOExample" resultType="java.lang.Long">
+    select count(*) from icar_policy_applicant
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update icar_policy_applicant
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.policyId != null">
+        policy_id = #{record.policyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerName != null">
+        owner_name = #{record.ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerPhone != null">
+        owner_phone = #{record.ownerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerIdType != null">
+        owner_id_type = #{record.ownerIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerIdNo != null">
+        owner_id_no = #{record.ownerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerAddr != null">
+        owner_addr = #{record.ownerAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerBirthday != null">
+        owner_birthday = #{record.ownerBirthday,jdbcType=DATE},
+      </if>
+      <if test="record.ownerSex != null">
+        owner_sex = #{record.ownerSex,jdbcType=TINYINT},
+      </if>
+      <if test="record.ownerEmail != null">
+        owner_email = #{record.ownerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderName != null">
+        holder_name = #{record.holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderPhone != null">
+        holder_phone = #{record.holderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderIdType != null">
+        holder_id_type = #{record.holderIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderIdNo != null">
+        holder_id_no = #{record.holderIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderAddr != null">
+        holder_addr = #{record.holderAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.holderBirthday != null">
+        holder_birthday = #{record.holderBirthday,jdbcType=DATE},
+      </if>
+      <if test="record.holderSex != null">
+        holder_sex = #{record.holderSex,jdbcType=TINYINT},
+      </if>
+      <if test="record.insuredName != null">
+        insured_name = #{record.insuredName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredPhone != null">
+        insured_phone = #{record.insuredPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredIdType != null">
+        insured_id_type = #{record.insuredIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredIdNo != null">
+        insured_id_no = #{record.insuredIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredAddr != null">
+        insured_addr = #{record.insuredAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuredBirthday != null">
+        insured_birthday = #{record.insuredBirthday,jdbcType=DATE},
+      </if>
+      <if test="record.insuredSex != null">
+        insured_sex = #{record.insuredSex,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update icar_policy_applicant
+    set id = #{record.id,jdbcType=BIGINT},
+      policy_id = #{record.policyId,jdbcType=VARCHAR},
+      owner_name = #{record.ownerName,jdbcType=VARCHAR},
+      owner_phone = #{record.ownerPhone,jdbcType=VARCHAR},
+      owner_id_type = #{record.ownerIdType,jdbcType=VARCHAR},
+      owner_id_no = #{record.ownerIdNo,jdbcType=VARCHAR},
+      owner_addr = #{record.ownerAddr,jdbcType=VARCHAR},
+      owner_birthday = #{record.ownerBirthday,jdbcType=DATE},
+      owner_sex = #{record.ownerSex,jdbcType=TINYINT},
+      owner_email = #{record.ownerEmail,jdbcType=VARCHAR},
+      holder_name = #{record.holderName,jdbcType=VARCHAR},
+      holder_phone = #{record.holderPhone,jdbcType=VARCHAR},
+      holder_id_type = #{record.holderIdType,jdbcType=VARCHAR},
+      holder_id_no = #{record.holderIdNo,jdbcType=VARCHAR},
+      holder_addr = #{record.holderAddr,jdbcType=VARCHAR},
+      holder_birthday = #{record.holderBirthday,jdbcType=DATE},
+      holder_sex = #{record.holderSex,jdbcType=TINYINT},
+      insured_name = #{record.insuredName,jdbcType=VARCHAR},
+      insured_phone = #{record.insuredPhone,jdbcType=VARCHAR},
+      insured_id_type = #{record.insuredIdType,jdbcType=VARCHAR},
+      insured_id_no = #{record.insuredIdNo,jdbcType=VARCHAR},
+      insured_addr = #{record.insuredAddr,jdbcType=VARCHAR},
+      insured_birthday = #{record.insuredBirthday,jdbcType=DATE},
+      insured_sex = #{record.insuredSex,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDO">
+    update icar_policy_applicant
+    <set>
+      <if test="policyId != null">
+        policy_id = #{policyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null">
+        owner_name = #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerPhone != null">
+        owner_phone = #{ownerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdType != null">
+        owner_id_type = #{ownerIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdNo != null">
+        owner_id_no = #{ownerIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerAddr != null">
+        owner_addr = #{ownerAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerBirthday != null">
+        owner_birthday = #{ownerBirthday,jdbcType=DATE},
+      </if>
+      <if test="ownerSex != null">
+        owner_sex = #{ownerSex,jdbcType=TINYINT},
+      </if>
+      <if test="ownerEmail != null">
+        owner_email = #{ownerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="holderName != null">
+        holder_name = #{holderName,jdbcType=VARCHAR},
+      </if>
+      <if test="holderPhone != null">
+        holder_phone = #{holderPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="holderIdType != null">
+        holder_id_type = #{holderIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="holderIdNo != null">
+        holder_id_no = #{holderIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="holderAddr != null">
+        holder_addr = #{holderAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="holderBirthday != null">
+        holder_birthday = #{holderBirthday,jdbcType=DATE},
+      </if>
+      <if test="holderSex != null">
+        holder_sex = #{holderSex,jdbcType=TINYINT},
+      </if>
+      <if test="insuredName != null">
+        insured_name = #{insuredName,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredPhone != null">
+        insured_phone = #{insuredPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredIdType != null">
+        insured_id_type = #{insuredIdType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredIdNo != null">
+        insured_id_no = #{insuredIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredAddr != null">
+        insured_addr = #{insuredAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredBirthday != null">
+        insured_birthday = #{insuredBirthday,jdbcType=DATE},
+      </if>
+      <if test="insuredSex != null">
+        insured_sex = #{insuredSex,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.PolicyApplicantDO">
+    update icar_policy_applicant
+    set policy_id = #{policyId,jdbcType=VARCHAR},
+      owner_name = #{ownerName,jdbcType=VARCHAR},
+      owner_phone = #{ownerPhone,jdbcType=VARCHAR},
+      owner_id_type = #{ownerIdType,jdbcType=VARCHAR},
+      owner_id_no = #{ownerIdNo,jdbcType=VARCHAR},
+      owner_addr = #{ownerAddr,jdbcType=VARCHAR},
+      owner_birthday = #{ownerBirthday,jdbcType=DATE},
+      owner_sex = #{ownerSex,jdbcType=TINYINT},
+      owner_email = #{ownerEmail,jdbcType=VARCHAR},
+      holder_name = #{holderName,jdbcType=VARCHAR},
+      holder_phone = #{holderPhone,jdbcType=VARCHAR},
+      holder_id_type = #{holderIdType,jdbcType=VARCHAR},
+      holder_id_no = #{holderIdNo,jdbcType=VARCHAR},
+      holder_addr = #{holderAddr,jdbcType=VARCHAR},
+      holder_birthday = #{holderBirthday,jdbcType=DATE},
+      holder_sex = #{holderSex,jdbcType=TINYINT},
+      insured_name = #{insuredName,jdbcType=VARCHAR},
+      insured_phone = #{insuredPhone,jdbcType=VARCHAR},
+      insured_id_type = #{insuredIdType,jdbcType=VARCHAR},
+      insured_id_no = #{insuredIdNo,jdbcType=VARCHAR},
+      insured_addr = #{insuredAddr,jdbcType=VARCHAR},
+      insured_birthday = #{insuredBirthday,jdbcType=DATE},
+      insured_sex = #{insuredSex,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

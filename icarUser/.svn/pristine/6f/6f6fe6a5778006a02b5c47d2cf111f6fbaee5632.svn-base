@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.data.CustomerDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.icar.user.model.data.CustomerDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="salesmanId" jdbcType="VARCHAR" property="salesmanId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="BIGINT" property="phone" />
+    <result column="licenseNo" jdbcType="VARCHAR" property="licenseNo" />
+    <result column="vinNo" jdbcType="VARCHAR" property="vinNo" />
+    <result column="modelName" jdbcType="VARCHAR" property="modelName" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="lastCompanyId" jdbcType="INTEGER" property="lastCompanyId" />
+    <result column="latelyQuoteTime" jdbcType="BIGINT" property="latelyQuoteTime" />
+    <result column="comEndDate" jdbcType="DATE" property="comEndDate" />
+    <result column="forceEndDate" jdbcType="DATE" property="forceEndDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="del" jdbcType="TINYINT" property="del" />
+    <result column="sourceId" jdbcType="VARCHAR" property="sourceId" />
+    <result column="insureProvince" jdbcType="VARCHAR" property="insureProvince" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, salesmanId, name, phone, licenseNo, vinNo, modelName, createTime, lastCompanyId, 
+    latelyQuoteTime, comEndDate, forceEndDate, remark, del, sourceId, insureProvince
+  </sql>
+  <select id="selectByExample" parameterType="com.ybinsure.icar.user.model.data.CustomerDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ic_customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ic_customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ic_customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.icar.user.model.data.CustomerDOExample">
+    delete from ic_customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.icar.user.model.data.CustomerDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_customer (id, salesmanId, name, 
+      phone, licenseNo, vinNo, 
+      modelName, createTime, lastCompanyId, 
+      latelyQuoteTime, comEndDate, forceEndDate, 
+      remark, del, sourceId, 
+      insureProvince)
+    values (#{id,jdbcType=INTEGER}, #{salesmanId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=BIGINT}, #{licenseNo,jdbcType=VARCHAR}, #{vinNo,jdbcType=VARCHAR}, 
+      #{modelName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastCompanyId,jdbcType=INTEGER}, 
+      #{latelyQuoteTime,jdbcType=BIGINT}, #{comEndDate,jdbcType=DATE}, #{forceEndDate,jdbcType=DATE}, 
+      #{remark,jdbcType=VARCHAR}, #{del,jdbcType=TINYINT}, #{sourceId,jdbcType=VARCHAR}, 
+      #{insureProvince,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.icar.user.model.data.CustomerDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ic_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="salesmanId != null">
+        salesmanId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="licenseNo != null">
+        licenseNo,
+      </if>
+      <if test="vinNo != null">
+        vinNo,
+      </if>
+      <if test="modelName != null">
+        modelName,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="lastCompanyId != null">
+        lastCompanyId,
+      </if>
+      <if test="latelyQuoteTime != null">
+        latelyQuoteTime,
+      </if>
+      <if test="comEndDate != null">
+        comEndDate,
+      </if>
+      <if test="forceEndDate != null">
+        forceEndDate,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="del != null">
+        del,
+      </if>
+      <if test="sourceId != null">
+        sourceId,
+      </if>
+      <if test="insureProvince != null">
+        insureProvince,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=INTEGER},
+      <if test="salesmanId != null">
+        #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="licenseNo != null">
+        #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="vinNo != null">
+        #{vinNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCompanyId != null">
+        #{lastCompanyId,jdbcType=INTEGER},
+      </if>
+      <if test="latelyQuoteTime != null">
+        #{latelyQuoteTime,jdbcType=BIGINT},
+      </if>
+      <if test="comEndDate != null">
+        #{comEndDate,jdbcType=DATE},
+      </if>
+      <if test="forceEndDate != null">
+        #{forceEndDate,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null">
+        #{del,jdbcType=TINYINT},
+      </if>
+      <if test="sourceId != null">
+        #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="insureProvince != null">
+        #{insureProvince,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.icar.user.model.data.CustomerDOExample" resultType="java.lang.Long">
+    select count(*) from ic_customer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ic_customer
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.salesmanId != null">
+        salesmanId = #{record.salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=BIGINT},
+      </if>
+      <if test="record.licenseNo != null">
+        licenseNo = #{record.licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vinNo != null">
+        vinNo = #{record.vinNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modelName != null">
+        modelName = #{record.modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastCompanyId != null">
+        lastCompanyId = #{record.lastCompanyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.latelyQuoteTime != null">
+        latelyQuoteTime = #{record.latelyQuoteTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.comEndDate != null">
+        comEndDate = #{record.comEndDate,jdbcType=DATE},
+      </if>
+      <if test="record.forceEndDate != null">
+        forceEndDate = #{record.forceEndDate,jdbcType=DATE},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.del != null">
+        del = #{record.del,jdbcType=TINYINT},
+      </if>
+      <if test="record.sourceId != null">
+        sourceId = #{record.sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insureProvince != null">
+        insureProvince = #{record.insureProvince,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ic_customer
+    set id = #{record.id,jdbcType=INTEGER},
+      salesmanId = #{record.salesmanId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=BIGINT},
+      licenseNo = #{record.licenseNo,jdbcType=VARCHAR},
+      vinNo = #{record.vinNo,jdbcType=VARCHAR},
+      modelName = #{record.modelName,jdbcType=VARCHAR},
+      createTime = #{record.createTime,jdbcType=TIMESTAMP},
+      lastCompanyId = #{record.lastCompanyId,jdbcType=INTEGER},
+      latelyQuoteTime = #{record.latelyQuoteTime,jdbcType=BIGINT},
+      comEndDate = #{record.comEndDate,jdbcType=DATE},
+      forceEndDate = #{record.forceEndDate,jdbcType=DATE},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      del = #{record.del,jdbcType=TINYINT},
+      sourceId = #{record.sourceId,jdbcType=VARCHAR},
+      insureProvince = #{record.insureProvince,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.icar.user.model.data.CustomerDO">
+    update ic_customer
+    <set>
+      <if test="salesmanId != null">
+        salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=BIGINT},
+      </if>
+      <if test="licenseNo != null">
+        licenseNo = #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="vinNo != null">
+        vinNo = #{vinNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        modelName = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastCompanyId != null">
+        lastCompanyId = #{lastCompanyId,jdbcType=INTEGER},
+      </if>
+      <if test="latelyQuoteTime != null">
+        latelyQuoteTime = #{latelyQuoteTime,jdbcType=BIGINT},
+      </if>
+      <if test="comEndDate != null">
+        comEndDate = #{comEndDate,jdbcType=DATE},
+      </if>
+      <if test="forceEndDate != null">
+        forceEndDate = #{forceEndDate,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="del != null">
+        del = #{del,jdbcType=TINYINT},
+      </if>
+      <if test="sourceId != null">
+        sourceId = #{sourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="insureProvince != null">
+        insureProvince = #{insureProvince,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.icar.user.model.data.CustomerDO">
+    update ic_customer
+    set salesmanId = #{salesmanId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=BIGINT},
+      licenseNo = #{licenseNo,jdbcType=VARCHAR},
+      vinNo = #{vinNo,jdbcType=VARCHAR},
+      modelName = #{modelName,jdbcType=VARCHAR},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      lastCompanyId = #{lastCompanyId,jdbcType=INTEGER},
+      latelyQuoteTime = #{latelyQuoteTime,jdbcType=BIGINT},
+      comEndDate = #{comEndDate,jdbcType=DATE},
+      forceEndDate = #{forceEndDate,jdbcType=DATE},
+      remark = #{remark,jdbcType=VARCHAR},
+      del = #{del,jdbcType=TINYINT},
+      sourceId = #{sourceId,jdbcType=VARCHAR},
+      insureProvince = #{insureProvince,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

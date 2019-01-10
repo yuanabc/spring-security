@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.extend.IcarChannelExtendMapper">
+
+    <sql id="Base_Column_List">
+        c.id, c.companyId, c.comcodes, c.account, c.pwd, c.companyCode, c.userCode, c.taxName, c.taxCode, c.voucherNo,
+        c.serviceCode, c.orgCode, c.managersCode, c.cityId, c.type, c.times, c.explains, c.sourceId, c.isShow,
+        c.del, c.field01, c.field02, c.field03, c.field04, c.field05, c.field06, c.field07, c.areaCode
+    </sql>
+
+    <select id="selectRenewalChannel" resultMap="com.ybinsure.icar.user.mapper.data.IcarChannelDOMapper.BaseResultMap">
+        <!-- 查询人保外网或内网工号 -->
+        ( SELECT
+        <include refid="Base_Column_List" />
+        FROM ic_channel c WHERE c.del = 0 AND c.companyId IN (0, 31) AND c.areaCode = #{record.areaCode} ORDER BY RAND() LIMIT 1 )
+        UNION
+        <!-- 查询太平洋工号 -->
+        ( SELECT
+        <include refid="Base_Column_List" />
+        FROM ic_channel c WHERE c.del = 0 AND c.companyId = 2 AND c.areaCode = #{record.areaCode} ORDER BY RAND() LIMIT 1 )
+        <if test="record.query == null or record.query == 1">
+            UNION
+            <!-- 查询中华联合工号 -->
+            ( SELECT
+            <include refid="Base_Column_List" />
+            FROM ic_channel c WHERE c.del = 0 AND c.companyId = 44 ORDER BY RAND() LIMIT 1 )
+        </if>
+    </select>
+    <!-- 随机查询平安工号 -->
+    <select id="selectPingAnChannel" parameterType="string" resultMap="com.ybinsure.icar.user.mapper.data.IcarChannelDOMapper.BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+            ic_channel c
+        LEFT JOIN auth_user u ON u.channel_code = c.sourceId
+        WHERE u.id = #{value}
+        AND c.companyId = 1
+        AND c.del = 0
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+</mapper>

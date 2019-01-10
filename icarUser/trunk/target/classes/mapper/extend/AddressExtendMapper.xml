@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.extend.AddressExtendMapper">
+    <!-- 根据用户查询保单配送地址 -->
+    <resultMap id="AddressResultMap" type="com.ybinsure.icar.user.model.vo.AddressVO">
+        <id column="id" jdbcType="INTEGER" property="addrId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="BIGINT" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="isDefault" jdbcType="TINYINT" property="isDefault"/>
+    </resultMap>
+    <select id="selectAddressByUser" parameterType="map" resultMap="AddressResultMap">
+        select id, name, phone, address, email, isDefault from ic_address t where t.uid = #{value}
+    </select>
+
+</mapper>

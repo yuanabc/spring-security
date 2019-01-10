@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.extend.PolicyExtendMapper">
+    <!-- 查询保单列表 -->
+    <resultMap id="PolicyResultMap" type="com.ybinsure.icar.user.model.dto.OrderDTO">
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="insure_time" jdbcType="BIGINT" property="insureTime"/>
+        <result column="pay_time" jdbcType="BIGINT" property="payTime"/>
+        <result column="policy_time" jdbcType="BIGINT" property="policyTime"/>
+        <result column="company_id" jdbcType="TINYINT" property="companyId" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="total_premium" jdbcType="DOUBLE" property="totalPremium"/>
+        <result column="tci_policy_status" jdbcType="TINYINT" property="tciPolicyStatus"/>
+        <result column="vci_policy_status" jdbcType="TINYINT" property="vciPolicyStatus"/>
+        <result column="policy_status" jdbcType="TINYINT" property="policyStatus"/>
+        <result column="license_no" jdbcType="VARCHAR" property="licenseNo"/>
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName"/>
+    </resultMap>
+    <!-- 保单详情 -->
+    <resultMap id="PolicyInfoMap" type="com.ybinsure.icar.user.model.dto.PolicyInfoDTO">
+        <!-- 保单信息 -->
+        <id column="id" jdbcType="VARCHAR" property="policyId" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="company_id" jdbcType="TINYINT" property="companyId" />
+        <result column="tci_start_date" jdbcType="DATE" property="tciStartDate" />
+        <result column="tci_end_date" jdbcType="DATE" property="tciEndDate" />
+        <result column="vci_start_date" jdbcType="DATE" property="vciStartDate" />
+        <result column="vci_end_date" jdbcType="DATE" property="vciEndDate" />
+        <result column="total_premium" jdbcType="DOUBLE" property="totalPremium" />
+        <result column="tci_premium" jdbcType="DOUBLE" property="tciPremium" />
+        <result column="vci_premium" jdbcType="DOUBLE" property="vciPremium" />
+        <result column="vehicle_tax" jdbcType="DOUBLE" property="vehicleTax" />
+        <result column="tci_loss_occurred_count" jdbcType="TINYINT" property="tciLossOccurredCount" />
+        <result column="vci_loss_occurred_count" jdbcType="TINYINT" property="vciLossOccurredCount" />
+        <result column="tci_discount" jdbcType="DOUBLE" property="tciDiscount" />
+        <result column="vci_discount" jdbcType="DOUBLE" property="vciDiscount" />
+        <result column="tci_commission" jdbcType="DOUBLE" property="tciCommission" />
+        <result column="vci_commission" jdbcType="DOUBLE" property="vciCommission" />
+        <result column="receive_name" jdbcType="VARCHAR" property="receiveName" />
+        <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress" />
+        <result column="receive_phone" jdbcType="VARCHAR" property="receivePhone" />
+        <result column="proposal_no" jdbcType="VARCHAR" property="proposalNo" />
+        <result column="tci_proposal_no" jdbcType="VARCHAR" property="tciProposalNo" />
+        <result column="vci_proposal_no" jdbcType="VARCHAR" property="vciProposalNo" />
+        <result column="pay_no" jdbcType="VARCHAR" property="payNo" />
+        <result column="policy_no" jdbcType="VARCHAR" property="policyNo" />
+        <result column="tci_policy_no" jdbcType="VARCHAR" property="tciPolicyNo" />
+        <result column="vci_policy_no" jdbcType="VARCHAR" property="vciPolicyNo" />
+        <result column="tci_policy_status" jdbcType="TINYINT" property="tciPolicyStatus" />
+        <result column="tci_status_message" jdbcType="VARCHAR" property="tciStatusMessage" />
+        <result column="vci_policy_status" jdbcType="TINYINT" property="vciPolicyStatus" />
+        <result column="vci_status_message" jdbcType="VARCHAR" property="vciStatusMessage" />
+        <result column="policy_status" jdbcType="TINYINT" property="policyStatus" />
+        <result column="reason" jdbcType="VARCHAR" property="reason" />
+        <result column="quote_time" jdbcType="BIGINT" property="quoteTime" />
+        <result column="insure_time" jdbcType="BIGINT" property="insureTime" />
+        <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+        <result column="policy_time" jdbcType="BIGINT" property="policyTime" />
+        <result column="tci_policy_end_date" jdbcType="DATE" property="tciPolicyEndDate" />
+        <result column="vci_policy_end_date" jdbcType="DATE" property="vciPolicyEndDate" />
+        <result column="channel0" jdbcType="VARCHAR" property="channel0" />
+        <result column="channel1" jdbcType="VARCHAR" property="channel1" />
+        <result column="channel2" jdbcType="VARCHAR" property="channel2" />
+        <result column="channel3" jdbcType="VARCHAR" property="channel3" />
+        <result column="channel4" jdbcType="VARCHAR" property="channel4" />
+        <result column="channel5" jdbcType="VARCHAR" property="channel5" />
+        <result column="channel6" jdbcType="VARCHAR" property="channel6" />
+        <!-- 车辆信息 -->
+        <result column="license_no" jdbcType="VARCHAR" property="licenseNo" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="model_code" jdbcType="VARCHAR" property="modelCode" />
+        <result column="frame_no" jdbcType="VARCHAR" property="frameNo" />
+        <result column="engine_no" jdbcType="VARCHAR" property="engineNo" />
+        <result column="enroll_date" jdbcType="DATE" property="enrollDate" />
+        <result column="issue_year" jdbcType="VARCHAR" property="issueYear" />
+        <result column="purchase_price" jdbcType="INTEGER" property="purchasePrice" />
+        <result column="actual_price" jdbcType="DOUBLE" property="actualPrice" />
+        <result column="seat_count" jdbcType="TINYINT" property="seatCount" />
+        <result column="transfer_date" jdbcType="DATE" property="transferDate" />
+        <result column="displacement" jdbcType="DOUBLE" property="displacement" />
+        <result column="curb_weight" jdbcType="DOUBLE" property="curbWeight" />
+        <result column="tonnage" jdbcType="DOUBLE" property="tonnage" />
+        <result column="vehicle_type" jdbcType="VARCHAR" property="vehicleType" />
+        <result column="vehicle_category" jdbcType="VARCHAR" property="vehicleCategory" />
+        <result column="use_nature" jdbcType="VARCHAR" property="useNature" />
+        <result column="attach_nature" jdbcType="VARCHAR" property="attachNature" />
+        <result column="plate_type" jdbcType="VARCHAR" property="plateType" />
+        <result column="plate_color" jdbcType="VARCHAR" property="plateColor" />
+        <result column="energy_type" jdbcType="VARCHAR" property="energyType" />
+        <!-- 人员信息 -->
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+        <result column="owner_phone" jdbcType="VARCHAR" property="ownerPhone" />
+        <result column="owner_id_type" jdbcType="VARCHAR" property="ownerIdType" />
+        <result column="owner_id_no" jdbcType="VARCHAR" property="ownerIdNo" />
+        <result column="owner_addr" jdbcType="VARCHAR" property="ownerAddr" />
+        <result column="owner_birthday" jdbcType="DATE" property="ownerBirthday" />
+        <result column="owner_sex" jdbcType="TINYINT" property="ownerSex" />
+        <result column="owner_email" jdbcType="VARCHAR" property="ownerEmail" />
+        <result column="holder_name" jdbcType="VARCHAR" property="holderName" />
+        <result column="holder_phone" jdbcType="VARCHAR" property="holderPhone" />
+        <result column="holder_id_type" jdbcType="VARCHAR" property="holderIdType" />
+        <result column="holder_id_no" jdbcType="VARCHAR" property="holderIdNo" />
+        <result column="holder_addr" jdbcType="VARCHAR" property="holderAddr" />
+        <result column="holder_birthday" jdbcType="DATE" property="holderBirthday" />
+        <result column="holder_sex" jdbcType="TINYINT" property="holderSex" />
+        <result column="insured_name" jdbcType="VARCHAR" property="insuredName" />
+        <result column="insured_phone" jdbcType="VARCHAR" property="insuredPhone" />
+        <result column="insured_id_type" jdbcType="VARCHAR" property="insuredIdType" />
+        <result column="insured_id_no" jdbcType="VARCHAR" property="insuredIdNo" />
+        <result column="insured_addr" jdbcType="VARCHAR" property="insuredAddr" />
+        <result column="insured_birthday" jdbcType="DATE" property="insuredBirthday" />
+        <result column="insured_sex" jdbcType="TINYINT" property="insuredSex" />
+        <!-- 保险公司名称 -->
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    </resultMap>
+    <!-- 最近询价结果 -->
+    <resultMap id="RecentQuoteMap" type="com.ybinsure.icar.user.model.vo.QuoteInfoVO">
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="quote_time" jdbcType="BIGINT" property="quoteTime" />
+        <result column="company_id" jdbcType="TINYINT" property="companyId" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="total_premium" jdbcType="DOUBLE" property="totalPremium" />
+        <result column="policy_status" jdbcType="TINYINT" property="policyStatus" />
+        <result column="license_no" jdbcType="VARCHAR" property="licenseNo" />
+        <result column="frame_no" jdbcType="VARCHAR" property="frameNo" />
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+        <result column="countQuote" jdbcType="INTEGER" property="countQuote" />
+    </resultMap>
+
+    <sql id="QueryPolicyColumn">
+            t.order_id,
+            t.insure_time,
+            t.pay_time,
+            t.policy_time,
+            t.total_premium,
+            t.tci_policy_status,
+            t.vci_policy_status,
+            t.policy_status,
+            v.license_no,
+            a.owner_name,
+            t.company_id,
+            c.`name` AS company_name
+        FROM
+            icar_policy t
+        LEFT JOIN icar_policy_vehicle v ON v.policy_id = t.id
+        LEFT JOIN icar_policy_applicant a ON a.policy_id = t.id
+        LEFT JOIN ic_company c ON c.id = t.company_id
+    </sql>
+
+    <sql id="QueryPolicySql">
+        AND t.is_deleted = 0
+        AND t.policy_status > 1
+        <if test="record.licenseNo != null">
+            <bind name="licenseNo" value="record.licenseNo + '%'" />
+            AND v.license_no like #{licenseNo}
+        </if>
+        <if test="record.ownerName != null">
+            <bind name="ownerName" value="record.ownerName + '%'" />
+            AND a.owner_name like #{ownerName}
+        </if>
+        <choose>
+            <!-- 1待核保 -->
+            <when test="record.type == 1">
+                AND t.policy_status = 3
+            </when>
+            <!-- 2待支付 -->
+            <when test="record.type == 2">
+                AND t.policy_status = 4
+            </when>
+            <!-- 3已承保 -->
+            <when test="record.type == 3">
+                AND t.policy_status = 8
+            </when>
+        </choose>
+        ORDER BY t.insure_time DESC
+    </sql>
+
+    <!-- 查询保单列表 -->
+    <select id="selectUserPolicy" resultMap="PolicyResultMap">
+        SELECT
+        <include refid="PolicyQuoteColumn" />
+        WHERE t.user_id = #{record.auth}
+        <include refid="QueryPolicySql" />
+    </select>
+    <select id="selectUserPolicyByCG" resultMap="PolicyResultMap">
+        SELECT
+        <include refid="PolicyQuoteColumn" />
+        WHERE t.order_id IN (
+            SELECT s.orderId FROM ic_special_channel_order s WHERE s.userId = #{record.auth}
+        )
+        <include refid="QueryPolicySql" />
+    </select>
+
+    <sql id="PolicyQuoteColumn">
+            t.*,
+            v.*,
+            a.*,
+            c.`name` AS company_name
+        FROM
+            icar_policy t
+        LEFT JOIN icar_policy_vehicle v ON v.policy_id = t.id
+        LEFT JOIN icar_policy_applicant a ON a.policy_id = t.id
+        LEFT JOIN ic_company c ON c.id = t.company_id
+    </sql>
+
+    <!-- 保单详情 -->
+    <select id="selectPolicyInfo" resultMap="PolicyInfoMap">
+        SELECT
+        <include refid="PolicyQuoteColumn" />
+        WHERE t.order_id = #{orderId}
+        <if test="userId != null">
+            AND t.user_id = #{userId}
+        </if>
+    </select>
+    <!-- 根据车牌号查询已承保的保单信息 -->
+    <select id="selectPolicyByLicenseNo" parameterType="string" resultMap="PolicyInfoMap">
+        SELECT
+        <include refid="PolicyQuoteColumn" />
+        WHERE t.policy_status = 8
+        AND v.license_no = #{value}
+        ORDER BY t.policy_time DESC
+        LIMIT 1
+    </select>
+    <!-- 根据车牌号查询已承保的保单信息 -->
+    <select id="selectPolicyByLicenseNoUnderwrite" parameterType="string" resultMap="PolicyInfoMap">
+        SELECT
+        <include refid="PolicyQuoteColumn" />
+        WHERE t.policy_status > 0
+        AND v.license_no = #{value}
+        ORDER BY t.quote_time DESC
+        LIMIT 1
+    </select>
+
+    <sql id="RecentQuoteColumn">
+        b.license_no,
+        b.frame_no,
+        c.order_id,
+        c.total_premium,
+        c.policy_status,
+        c.quote_time,
+        d.owner_name,
+        c.company_id,
+        e.`name` AS company_name
+    </sql>
+    <sql id="RecentQuoteSql">
+        LEFT JOIN icar_policy c ON c.id = b.policy_id
+        LEFT JOIN icar_policy_applicant d ON d.policy_id = c.id
+        LEFT JOIN ic_company e ON e.id = c.company_id
+        <where>
+            <if test="record.auth != null">
+                AND c.user_id = #{record.auth}
+            </if>
+            <if test="record.licenseNo != null">
+                <bind name="licenseNo" value="record.licenseNo + '%'" />
+                AND b.license_no LIKE #{licenseNo}
+            </if>
+            <if test="record.ownerName != null">
+                <bind name="ownerName" value="record.ownerName + '%'" />
+                AND d.owner_name LIKE #{ownerName}
+            </if>
+            <if test="record.frameNo != null">
+                AND b.frame_no = #{record.frameNo}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 最近10条询价记录 -->
+    <select id="selectRecentQuote" resultMap="RecentQuoteMap">
+        SELECT
+        a.cc AS countQuote,
+        <include refid="RecentQuoteColumn" />
+        FROM
+            (
+                SELECT
+                    MAX(v.id) vid,
+                    COUNT(frame_no) cc
+                FROM
+                    icar_policy_vehicle v
+                LEFT JOIN icar_policy p ON p.id = v.policy_id
+                WHERE
+                    p.user_id = #{record.auth}
+                GROUP BY
+                    v.frame_no
+                ORDER BY
+                    vid DESC
+                LIMIT 10
+            ) a
+        LEFT JOIN icar_policy_vehicle b ON b.id = a.vid
+        <include refid="RecentQuoteSql" />
+    </select>
+    <select id="selectRecentQuoteByCG" resultMap="RecentQuoteMap">
+        SELECT
+        a.cc AS countQuote,
+        <include refid="RecentQuoteColumn" />
+        FROM
+            (
+                SELECT
+                    MAX(v.id) vid,
+                    COUNT(frame_no) cc
+                FROM
+                    icar_policy_vehicle v
+                LEFT JOIN icar_policy p ON p.id = v.policy_id
+                WHERE p.order_id IN (
+                    SELECT s.orderId FROM ic_special_channel_order s WHERE s.userId = #{record.auth}
+                )
+                GROUP BY
+                    v.frame_no
+                ORDER BY
+                    vid DESC
+                LIMIT 10
+            ) a
+        LEFT JOIN icar_policy_vehicle b ON b.id = a.vid
+        <include refid="RecentQuoteSql" />
+    </select>
+
+    <!-- 根据车架号查询最近20条报价记录 -->
+    <select id="selectRecentQuoteByFrameNo" resultMap="RecentQuoteMap">
+        SELECT
+        <include refid="RecentQuoteColumn" />
+        FROM
+        icar_policy_vehicle b
+        <include refid="RecentQuoteSql" />
+        ORDER BY c.quote_time DESC
+        LIMIT 20
+    </select>
+    <select id="selectRecentQuoteByFrameNoByCG" resultMap="RecentQuoteMap">
+        SELECT
+        <include refid="RecentQuoteColumn" />
+        FROM
+        icar_policy_vehicle b
+        LEFT JOIN icar_policy c ON c.id = b.policy_id
+        LEFT JOIN icar_policy_applicant d ON d.policy_id = c.id
+        LEFT JOIN ic_company e ON e.id = c.company_id
+        WHERE c.order_id IN (
+            SELECT s.orderId FROM ic_special_channel_order s WHERE s.userId = #{record.auth}
+        )
+        <if test="record.frameNo != null">
+            AND b.frame_no = #{record.frameNo}
+        </if>
+        ORDER BY c.quote_time DESC
+        LIMIT 20
+    </select>
+
+    <sql id="PolicyVehicleColumn">
+        license_no, brand_name, model_code, frame_no, engine_no, enroll_date,
+        issue_year, purchase_price, actual_price, seat_count, transfer_date, displacement,
+        curb_weight, tonnage, vehicle_type, vehicle_category, use_nature, attach_nature,
+        plate_type, plate_color, energy_type
+    </sql>
+
+    <!-- 查询保单车辆信息 -->
+    <select id="selectPolicyVehicle" resultMap="com.ybinsure.icar.user.mapper.data.PolicyVehicleDOMapper.BaseResultMap">
+        SELECT
+        <include refid="PolicyVehicleColumn" />
+        FROM
+            icar_policy_vehicle t
+        LEFT JOIN icar_policy p on p.id = t.policy_id
+        WHERE p.user_id = #{record.auth}
+        <if test="record.licenseNo != null">
+            AND t.license_no = #{record.licenseNo}
+        </if>
+        <if test="record.frameNo != null">
+            AND t.frameNo = #{record.frameNo}
+        </if>
+        ORDER BY p.quote_time DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectPolicyInsureArea" parameterType="string" resultType="com.ybinsure.icar.user.model.dto.InsureInfoDTO">
+        SELECT
+            c1.`name` AS insureCity,
+            c2.`name` AS insureProvince
+        FROM
+            auth_company t
+        LEFT JOIN ic_city c1 ON c1.id = t.city
+        LEFT JOIN ic_city c2 ON c2.id = c1.pid
+        WHERE
+            t.id = #{value}
+    </select>
+
+    <select id="countPolicyByCG" resultType="java.lang.Integer">
+        SELECT count(*) FROM ic_special_channel_order WHERE orderId = #{orderId} AND userId = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ybinsure.icar.user.mapper.wallet.WalletMapper" >
+	
+	<!-- 取到个人的信息 -->
+	<select id="getUserInfoById" parameterType="String" resultType="map">
+		SELECT t.phone AS cell, t.id_no AS idNo, t.id_name AS named FROM auth_user t WHERE id = #{uId}
+	</select>
+	
+	<!-- 取到个人钱包的信息 -->
+	<select id="getWalletById" parameterType="String" resultType="map">
+		SELECT wallet, card_type AS cardType, bank_no AS cardNumber, bank, account_holder AS accountHolder, id_name AS named, ISNULL(with_draw_pwd) isPwd FROM auth_user WHERE id = #{uId}
+	</select>
+	
+	<!-- 更新钱包密码 -->
+	<update id="updateWalletPassword" parameterType="String" >
+      UPDATE auth_user u, ic_code c SET with_draw_pwd = #{pwd} WHERE u.phone = c.users AND c.times > UNIX_TIMESTAMP() * 1000 - 1800000 AND c.codes = #{code} AND u.id = #{uId}
+	</update>
+	
+	<!-- 清空错误次数记录表 -->
+	<update id="clearPassWordErr" parameterType="String" >
+	  update ayg_payment_pwd_error set payErrorNum = 0 where userId = #{uId} and to_days(payErrorTime)= to_days(now())
+	</update>
+	
+	
+	<!-- 添加钱包提现密码 -->
+	<update id="addWalletPassword" parameterType="String" >
+      UPDATE auth_user u SET with_draw_pwd = #{pwd} WHERE u.id = #{uId} AND ( with_draw_pwd IS NULL OR with_draw_pwd = '' )
+	</update>
+	
+	<!-- 钱包记录列表 type 0为全部，1为提现，2为收入-->
+	
+	<select  id="getWalletRecord"  resultType="map">
+	
+	<if test="type==0"> 
+	   SELECT r.*, accountNo, accountName, payKind, payStatus , payMsg, t.batchNo, aygOrderNo FROM ayg_walet_running_record r LEFT JOIN ayg_pay_order o ON r.rId = o.id LEFT JOIN ayg_grant t ON r.rId = t.id  where r.uId=#{uId}  ORDER BY createTime DESC LIMIT #{page}, #{row}
+	</if>
+	<if test="type==1"> 
+	   SELECT r.*, accountNo, accountName, payKind, payStatus , payMsg, t.batchNo, aygOrderNo FROM ayg_walet_running_record r LEFT JOIN ayg_pay_order o ON r.rId = o.id LEFT JOIN ayg_grant t ON r.rId = t.id where type=1 and r.uId=#{uId}  ORDER BY createTime DESC LIMIT #{page,jdbcType=INTEGER}, #{row,jdbcType=INTEGER}
+	</if>
+	<if test="type==2"> 
+	   SELECT r.*, accountNo, accountName, payKind, payStatus , payMsg, t.batchNo, aygOrderNo FROM ayg_walet_running_record r LEFT JOIN ayg_pay_order o ON r.rId = o.id LEFT JOIN ayg_grant t ON r.rId = t.id  where type=0 and r.uId=#{uId}  ORDER BY createTime DESC LIMIT #{page,jdbcType=INTEGER}, #{row,jdbcType=INTEGER}
+	</if>
+	<!--  ORDER BY times DESC LIMIT #{page,jdbcType=INTEGER}, 10 -->
+	</select>
+	
+		
+	
+	<!-- /**
+	 * 检查用户的是否实名验证
+	 * @param uId
+	 * @return
+	 */
+	boolean (int uId); -->
+	<select  id="checkUserRealNameAuth" parameterType="String" resultType="map">
+	
+	  SELECT o.signState,s.stateDesc from ayg_sign_order o LEFT JOIN ayg_sign_state s ON o.signState = s.id WHERE o.userId =#{uId} ORDER BY o.id desc LIMIT 1
+	
+	</select>
+	
+	<!-- 	/**
+	 * 修改，绑定开户账号
+	 * @param uId
+	 * @param accountHolder
+	 * @param cardType  0为银联卡，1为支付宝，2为微信
+	 * @param cardNumber 银行卡号,支付宝账号，微信账号
+	 * @param bankDeposit  开户支行
+	 * @param bank  开户银行
+	 * @return
+	 */
+	boolean bindWithdrawAccount(int uId,String accountHolder,int cardType,String cardNumber,String bankDeposit,String bank );
+	 -->
+	<update  id="bindWithdrawAccount" parameterType="String" >
+	   UPDATE auth_user SET card_type = #{cardType}, account_holder = id_name, bank_no = #{cardNumber}, bank = #{bank} WHERE id = #{uId}
+	</update>
+	
+	<!-- /**
+	 * 提现
+	 * @param uId
+	 * @param amount  金额
+	 * @return
+	 */
+	boolean withdraw(int uId,double amount); -->
+	
+	 <update id="withdraw" parameterType="String" >
+	  
+	  <!-- update ic_user set   where  -->
+	  
+	 </update>
+	 
+	 
+	 <!-- 是否签约 -->
+	 <select id="checkUserSigned"  parameterType="String" resultType="map"> 
+	      select * from ayg_sign_order where userId=#{uId} and personalMobile=#{personalMobile}
+	 </select>
+	 
+	  <!-- 是否签约 -->
+	 <select id="getUserSignedById"  parameterType="String" resultType="map"> 
+	      select * from ayg_sign_order where signOrderNo=#{signOrderNo}
+	 </select>
+	 
+	  <!-- 保存签约的信息 -->
+	 <insert id="saveUserSignedInfo" parameterType="map">
+	 
+	  insert into ayg_sign_order(userId,appId,signOrderNo,notifyUrl,identity,identityType,personalName,personalMobile,templateId,signState)
+	   	 values ( #{uId},#{appId},#{signOrderNo},#{notifyUrl},#{identity},#{identityType},#{personalName},#{personalMobile},#{templateId},#{signState} )
+	 
+	 </insert>
+	 
+	<!-- 更新的签约一下回调信息 -->
+	<update id="updateSignedState" parameterType="map">
+	update ayg_sign_order,ayg_sign_state s
+	<trim prefix="set" suffixOverrides=",">
+		signState=s.id,
+		<if test="notifyUrl!=null">notifyUrl=#{notifyUrl},</if>
+		<if test="subState!=null">subState=#{subState},</if>
+		<if test="partybSignUrl!=null">partybSignUrl=#{partybSignUrl},</if>
+		<if test="rspSignContent!=null">rspSignContent=#{rspSignContent},</if>
+		<if test="createTime!=null">createTime=#{createTime},</if>
+		<if test="expireTime!=null">expireTime=#{expireTime},</if>
+	</trim>
+	where userId=#{uId} and signOrderNo=#{signOrderNo} and s.state=#{state}
+  </update>
+	
+	<!-- 工资单笔代发 -->
+	 <insert id="savePayInfo" parameterType="map">
+	 
+	 </insert>
+	
+	<!--  更新代发的金额状态 -->
+	<update id="updatePayInfo" parameterType="map" >
+	
+	</update>
+
+</mapper>

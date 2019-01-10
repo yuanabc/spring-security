@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.icar.user.mapper.extend.UserExtendMapper">
+    <!-- 我的业绩返回结果 -->
+    <resultMap id="PerformanceResultMap" type="com.ybinsure.icar.user.model.vo.PerformanceVO">
+        <result column="todayPremium" jdbcType="DOUBLE" property="todayPremium"/>
+        <result column="monthPremium" jdbcType="DOUBLE" property="monthPremium"/>
+        <result column="totalPremium" jdbcType="DOUBLE" property="totalPremium"/>
+        <result column="orderCount" jdbcType="BIGINT" property="orderCount"/>
+        <result column="totalBonus" jdbcType="DOUBLE" property="totalBonus"/>
+    </resultMap>
+
+    <sql id="PerformanceColumn">
+        a.totalPremium, b.todayPremium, c.monthPremium, c.orderCount
+    </sql>
+
+    <select id="selectUserPerformance" parameterType="map" resultMap="PerformanceResultMap">
+        SELECT
+        <include refid="PerformanceColumn" />
+        FROM (
+            SELECT sum(t.total_premium) AS totalPremium
+            FROM icar_policy t
+            WHERE t.user_id = #{record.userId}
+            AND t.policy_status = 8
+        ) a JOIN (
+            SELECT sum(t.total_premium) AS todayPremium
+            FROM icar_policy t
+            WHERE t.user_id = #{record.userId}
+            AND t.policy_status = 8
+            AND t.policy_time BETWEEN #{record.zeroTime} AND #{record.nowTime}
+        ) b JOIN (
+            SELECT sum(t.total_premium) AS monthPremium, count(*) AS orderCount
+            FROM icar_policy t
+            WHERE t.user_id = #{record.userId}
+            AND t.policy_status = 8
+            AND t.policy_time BETWEEN #{record.monthTime} AND #{record.nowTime}
+        ) c
+    </select>
+    <select id="selectCGPerformanceByCG" parameterType="map" resultMap="PerformanceResultMap">
+        SELECT
+        <include refid="PerformanceColumn" />
+        FROM (
+            SELECT sum(t.total_premium) AS totalPremium
+            FROM icar_policy t
+            WHERE t.order_id IN (
+                SELECT s.orderId FROM ic_special_channel_order s WHERE s.userid = #{record.userId}
+            )
+            AND t.policy_status = 8
+        ) a JOIN (
+            SELECT sum(t.total_premium) AS todayPremium
+            FROM icar_policy t
+            WHERE t.order_id IN (
+                SELECT s.orderId FROM ic_special_channel_order s WHERE s.userid = #{record.userId}
+            )
+            AND t.policy_status = 8
+            AND t.policy_time BETWEEN #{record.zeroTime} AND #{record.nowTime}
+        ) b JOIN (
+            SELECT sum(t.total_premium) AS monthPremium, count(*) AS orderCount
+            FROM icar_policy t
+            WHERE t.order_id IN (
+                SELECT s.orderId FROM ic_special_channel_order s WHERE s.userid = #{record.userId}
+            )
+            AND t.policy_status = 8
+            AND t.policy_time BETWEEN #{record.monthTime} AND #{record.nowTime}
+        ) c
+    </select>
+
+    <!-- 查询账户信息 -->
+    <select id="searchAccountInfo" parameterType="string" resultMap="PerformanceResultMap">
+        SELECT
+            COUNT(*) orderCount,
+            SUM(o.total_premium) totalPremium,
+            SUM(t.payment) totalBonus
+        FROM
+            ayg_grant t
+        LEFT JOIN auth_user u ON u.id = t.uId
+        LEFT JOIN icar_policy o ON o.order_id = t.batchNo
+        WHERE
+            t.uId = #{value}
+        GROUP BY t.uId
+    </select>
+
+    <!-- 查询奖金数据列表 -->
+    <select id="selectGrantByPage" resultType="com.ybinsure.icar.user.model.vo.BonusVO">
+        SELECT
+            v.license_no AS licenseNo,
+            a.owner_name AS userName,
+            t.payment AS amount,
+            t.createTime AS bonusTime,
+            t.state AS bonusState
+        FROM
+            ayg_grant t
+        LEFT JOIN icar_policy p ON p.order_id = t.batchNo
+        LEFT JOIN icar_policy_vehicle v ON v.policy_id = p.id
+        LEFT JOIN icar_policy_applicant a ON a.policy_id = p.id
+        WHERE
+            t.uId = #{record.auth}
+        <!-- 全部、0待发放、1已发放 -->
+        <if test="type != null">
+            AND t.state = #{record.type}
+        </if>
+        order by t.createTime desc
+    </select>
+
+    <!-- 查询账户信息 -->
+    <select id="selectAccountInfo" parameterType="string" resultType="com.ybinsure.icar.user.model.vo.AccountVO">
+        SELECT
+            c2.area,
+            c2.`name` AS provinceName,
+            c1.`name` AS cityName,
+            GROUP_CONCAT(DISTINCT cb.companyId ORDER BY cb.companyId ASC) AS companys
+        FROM
+            auth_company c
+        LEFT JOIN ic_city c1 ON c1.id = c.city
+        LEFT JOIN ic_city c2 ON c2.id = c1.pid
+        LEFT JOIN ic_channel_binds cb ON cb.company_id = c.id
+        WHERE
+            c.id = (
+                SELECT
+                    uc.company_id
+                FROM
+                    auth_user_company uc
+                WHERE
+                    uc.user_id = #{value}
+                AND uc.link_type = 1
+                ORDER BY
+                    uc.company_level DESC
+                LIMIT 1
+            )
+    </select>
+</mapper>
