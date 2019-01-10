@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.ChannelLinkUserMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="channelLinkedResultMap"
+               type="com.ybinsure.auth.model.link.ChannelExtend"
+               extends="com.ybinsure.auth.mapper.data.ChannelDOMapper.BaseResultMap">
+        <association property="admin" javaType="com.ybinsure.auth.model.link.UserExtend">
+            <id property="id" column="u_id"/>
+            <result property="userName" column="u_user_name"/>
+            <result property="phone" column="u_phone"/>
+            <result property="nickName" column="u_nick_name" />
+            <result property="idNo" column="u_id_no"/>
+            <collection property="roleDOS" ofType="com.ybinsure.auth.model.data.RoleDO">
+                <id property="id" column="r_id"/>
+                <result property="name" column="r_name" />
+            </collection>
+        </association>
+    </resultMap>
+
+    <sql id="queryOfTable">
+        select
+          c.*,
+          u.id u_id,
+          u.user_name u_user_name,
+          u.phone u_phone,
+          u.nick_name u_nick_name,
+          u.id_no u_id_no,
+          r.id r_id,
+          r.name r_name
+        from auth_channel c left join auth_user u on c.code = u.channel_code
+        left join auth_user_role ur on ur.user_id = u.id
+        left join auth_role r on r.id = ur.role_id
+    </sql>
+
+    <select id="query" resultMap="channelLinkedResultMap">
+        <include refid="queryOfTable" />
+        where c.id = #{id}
+    </select>
+
+</mapper>

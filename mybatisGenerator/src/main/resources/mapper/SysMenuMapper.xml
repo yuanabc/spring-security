@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tk.mybatis.pagehelper.dao.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="tk.mybatis.pagehelper.domain.SysMenu">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="PERM" jdbcType="VARCHAR" property="perm" />
+    <result column="TYPE" jdbcType="INTEGER" property="type" />
+    <result column="ORDER_NUM" jdbcType="INTEGER" property="orderNum" />
+    <result column="IS_DELETE" jdbcType="VARCHAR" property="isDelete" />
+    <result column="IS_ENABLE" jdbcType="VARCHAR" property="isEnable" />
+    <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="HIDDEN" jdbcType="VARCHAR" property="hidden" />
+    <result column="ALWAYS_SHOW" jdbcType="VARCHAR" property="alwaysShow" />
+    <result column="COMPONENT" jdbcType="VARCHAR" property="component" />
+    <result column="REDIRECT" jdbcType="VARCHAR" property="redirect" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="METHOD" jdbcType="VARCHAR" property="method" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="tk.mybatis.pagehelper.domain.SysMenu">
+    <result column="PATH" jdbcType="LONGVARCHAR" property="path" />
+    <result column="URL" jdbcType="LONGVARCHAR" property="url" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, PARENT_ID, NAME, ICON, PERM, TYPE, ORDER_NUM, IS_DELETE, IS_ENABLE, CREATED_TIME, 
+    UPDATE_TIME, HIDDEN, ALWAYS_SHOW, COMPONENT, REDIRECT, CREATE_USER, TITLE, METHOD
+  </sql>
+  <sql id="Blob_Column_List">
+    PATH, URL
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="tk.mybatis.pagehelper.domain.SysMenuExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="tk.mybatis.pagehelper.domain.SysMenuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_menu
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="tk.mybatis.pagehelper.domain.SysMenuExample">
+    delete from sys_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="tk.mybatis.pagehelper.domain.SysMenu">
+    <selectKey keyProperty="ID" order="BEFORE" resultType="java.lang.String">
+      SELECT replace(uuid(), '-', '')
+    </selectKey>
+    insert into sys_menu (ID, PARENT_ID, NAME, 
+      ICON, PERM, TYPE, ORDER_NUM, 
+      IS_DELETE, IS_ENABLE, CREATED_TIME, 
+      UPDATE_TIME, HIDDEN, ALWAYS_SHOW, 
+      COMPONENT, REDIRECT, CREATE_USER, 
+      TITLE, METHOD, PATH, 
+      URL)
+    values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{perm,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=VARCHAR}, #{isEnable,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{hidden,jdbcType=VARCHAR}, #{alwaysShow,jdbcType=VARCHAR}, 
+      #{component,jdbcType=VARCHAR}, #{redirect,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{path,jdbcType=LONGVARCHAR}, 
+      #{url,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="tk.mybatis.pagehelper.domain.SysMenu">
+    <selectKey keyProperty="ID" order="BEFORE" resultType="java.lang.String">
+      SELECT replace(uuid(), '-', '')
+    </selectKey>
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="icon != null">
+        ICON,
+      </if>
+      <if test="perm != null">
+        PERM,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="orderNum != null">
+        ORDER_NUM,
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE,
+      </if>
+      <if test="isEnable != null">
+        IS_ENABLE,
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="hidden != null">
+        HIDDEN,
+      </if>
+      <if test="alwaysShow != null">
+        ALWAYS_SHOW,
+      </if>
+      <if test="component != null">
+        COMPONENT,
+      </if>
+      <if test="redirect != null">
+        REDIRECT,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="title != null">
+        TITLE,
+      </if>
+      <if test="method != null">
+        METHOD,
+      </if>
+      <if test="path != null">
+        PATH,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="perm != null">
+        #{perm,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hidden != null">
+        #{hidden,jdbcType=VARCHAR},
+      </if>
+      <if test="alwaysShow != null">
+        #{alwaysShow,jdbcType=VARCHAR},
+      </if>
+      <if test="component != null">
+        #{component,jdbcType=VARCHAR},
+      </if>
+      <if test="redirect != null">
+        #{redirect,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="tk.mybatis.pagehelper.domain.SysMenuExample" resultType="java.lang.Long">
+    select count(*) from sys_menu
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sys_menu
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        PARENT_ID = #{record.parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null">
+        ICON = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.perm != null">
+        PERM = #{record.perm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        TYPE = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNum != null">
+        ORDER_NUM = #{record.orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null">
+        IS_DELETE = #{record.isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isEnable != null">
+        IS_ENABLE = #{record.isEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null">
+        CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.hidden != null">
+        HIDDEN = #{record.hidden,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alwaysShow != null">
+        ALWAYS_SHOW = #{record.alwaysShow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.component != null">
+        COMPONENT = #{record.component,jdbcType=VARCHAR},
+      </if>
+      <if test="record.redirect != null">
+        REDIRECT = #{record.redirect,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null">
+        CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        TITLE = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.method != null">
+        METHOD = #{record.method,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null">
+        PATH = #{record.path,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.url != null">
+        URL = #{record.url,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sys_menu
+    set ID = #{record.id,jdbcType=VARCHAR},
+      PARENT_ID = #{record.parentId,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ICON = #{record.icon,jdbcType=VARCHAR},
+      PERM = #{record.perm,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=INTEGER},
+      ORDER_NUM = #{record.orderNum,jdbcType=INTEGER},
+      IS_DELETE = #{record.isDelete,jdbcType=VARCHAR},
+      IS_ENABLE = #{record.isEnable,jdbcType=VARCHAR},
+      CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      HIDDEN = #{record.hidden,jdbcType=VARCHAR},
+      ALWAYS_SHOW = #{record.alwaysShow,jdbcType=VARCHAR},
+      COMPONENT = #{record.component,jdbcType=VARCHAR},
+      REDIRECT = #{record.redirect,jdbcType=VARCHAR},
+      CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      TITLE = #{record.title,jdbcType=VARCHAR},
+      METHOD = #{record.method,jdbcType=VARCHAR},
+      PATH = #{record.path,jdbcType=LONGVARCHAR},
+      URL = #{record.url,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sys_menu
+    set ID = #{record.id,jdbcType=VARCHAR},
+      PARENT_ID = #{record.parentId,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ICON = #{record.icon,jdbcType=VARCHAR},
+      PERM = #{record.perm,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=INTEGER},
+      ORDER_NUM = #{record.orderNum,jdbcType=INTEGER},
+      IS_DELETE = #{record.isDelete,jdbcType=VARCHAR},
+      IS_ENABLE = #{record.isEnable,jdbcType=VARCHAR},
+      CREATED_TIME = #{record.createdTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      HIDDEN = #{record.hidden,jdbcType=VARCHAR},
+      ALWAYS_SHOW = #{record.alwaysShow,jdbcType=VARCHAR},
+      COMPONENT = #{record.component,jdbcType=VARCHAR},
+      REDIRECT = #{record.redirect,jdbcType=VARCHAR},
+      CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      TITLE = #{record.title,jdbcType=VARCHAR},
+      METHOD = #{record.method,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="tk.mybatis.pagehelper.domain.SysMenu">
+    update sys_menu
+    <set>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="perm != null">
+        PERM = #{perm,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE = #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnable != null">
+        IS_ENABLE = #{isEnable,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hidden != null">
+        HIDDEN = #{hidden,jdbcType=VARCHAR},
+      </if>
+      <if test="alwaysShow != null">
+        ALWAYS_SHOW = #{alwaysShow,jdbcType=VARCHAR},
+      </if>
+      <if test="component != null">
+        COMPONENT = #{component,jdbcType=VARCHAR},
+      </if>
+      <if test="redirect != null">
+        REDIRECT = #{redirect,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        METHOD = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        PATH = #{path,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="tk.mybatis.pagehelper.domain.SysMenu">
+    update sys_menu
+    set PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      PERM = #{perm,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      IS_DELETE = #{isDelete,jdbcType=VARCHAR},
+      IS_ENABLE = #{isEnable,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      HIDDEN = #{hidden,jdbcType=VARCHAR},
+      ALWAYS_SHOW = #{alwaysShow,jdbcType=VARCHAR},
+      COMPONENT = #{component,jdbcType=VARCHAR},
+      REDIRECT = #{redirect,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      METHOD = #{method,jdbcType=VARCHAR},
+      PATH = #{path,jdbcType=LONGVARCHAR},
+      URL = #{url,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="tk.mybatis.pagehelper.domain.SysMenu">
+    update sys_menu
+    set PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      PERM = #{perm,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      IS_DELETE = #{isDelete,jdbcType=VARCHAR},
+      IS_ENABLE = #{isEnable,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      HIDDEN = #{hidden,jdbcType=VARCHAR},
+      ALWAYS_SHOW = #{alwaysShow,jdbcType=VARCHAR},
+      COMPONENT = #{component,jdbcType=VARCHAR},
+      REDIRECT = #{redirect,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      METHOD = #{method,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

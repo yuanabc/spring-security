@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.extend.ExtendUserMapper">
+
+    <select id="queryMaxCode" resultType="java.lang.Long">
+      select max(code) from auth_user where channel_code = #{channelCode} and user_type = #{userType} and code >= #{min}
+    </select>
+
+    <select id="queryNotEmptyPasswordUser" resultMap="com.ybinsure.auth.mapper.data.UserDOMapper.BaseResultMap">
+        select id, password from auth_user where password != ''
+    </select>
+
+    <select id="queryIdByChannelId" resultType="java.lang.String">
+        select u.id from auth_user u left join auth_channel c on u.channel_code = c.code where c.id = #{id}
+    </select>
+
+    <select id="queryFirst" resultMap="com.ybinsure.auth.mapper.data.UserDOMapper.BaseResultMap">
+        select * from auth_user where channel_code=#{channelCode} limit 0, 1
+    </select>
+
+
+    <update id="updatePassword" parameterType="com.ybinsure.auth.model.data.UserDO">
+        UPDATE auth_user set password = #{user.password} where id = #{user.id}
+    </update>
+
+</mapper>

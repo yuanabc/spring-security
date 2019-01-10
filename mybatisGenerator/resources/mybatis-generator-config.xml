@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="C:\Users\eric\.m2\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+
+    <context id="default" targetRuntime="Mybatis3">
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin" />
+        <commentGenerator>
+            <!--去除时间戳注释-->
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://120.27.21.67:13306/icar2?useSSL=false"
+                        userId="icar2"
+                        password="cxMysql171027yBcX">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--本服务实体类-->
+        <!--<javaModelGenerator targetPackage="com.ybinsure.auth.model.data" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+            <!--<property name="trimStrings" value="true" />-->
+        <!--</javaModelGenerator>-->
+        <!--<sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+        <!--</sqlMapGenerator>-->
+        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.ybinsure.auth.mapper.data" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+        <!--</javaClientGenerator>-->
+
+        <!--<table tableName="auth_property" domainObjectName="PropertyDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_property_type" domainObjectName="PropertyTypeDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client" domainObjectName="ClientDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_grant_type" domainObjectName="ClientRelateGrantTypesDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_resource" domainObjectName="ClientRelateResourceDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_scope" domainObjectName="ClientRelateScopeDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_channel" domainObjectName="ChannelDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_district" domainObjectName="DistrictDO">-->
+        <!--</table>-->
+        <!--<table tableName="auth_user" domainObjectName="UserDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_user_company" domainObjectName="UserRelateCompanyDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_role" domainObjectName="RoleDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_user_role" domainObjectName="UserRelateRoleDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_permission" domainObjectName="PermissionDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_role_permission" domainObjectName="RoleRelatePermissionDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_sales_channel_permission" domainObjectName="SalesChannelPermissionDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_policy_area" domainObjectName="PolicyAreaDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_company" domainObjectName="CompanyDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+
+
+        <!--finnace服务实体类-->
+        <!--<javaModelGenerator targetPackage="com.ybinsure.auth.model.request.finance" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+            <!--<property name="trimStrings" value="true" />-->
+        <!--</javaModelGenerator>-->
+        <!--<table tableName="finance_channel_balance" domainObjectName="ChannelBalanceDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

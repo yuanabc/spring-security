@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.extend.ExtendCompanyDOMapper">
+
+    <select id="queryByUserName" resultMap="com.ybinsure.auth.mapper.data.CompanyDOMapper.BaseResultMap">
+        select c.* from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        left join auth_company c on c.id = uc.company_id
+        where (u.user_name = #{userName} or u.phone = #{userName})
+        and u.channel_code = #{channelCode}
+        and uc.link_type = #{linkType}
+    </select>
+
+    <select id="queryMaxCode" resultType="java.lang.Long">
+      select max(code) from auth_company where channel_code = #{channelCode} and code > #{min}
+    </select>
+
+    <select id="queryAll" resultMap="com.ybinsure.auth.mapper.data.CompanyDOMapper.BaseResultMap">
+      select id, name, area_code, parent_id, level, company_type, channel_code from auth_company where deleted = #{deleted}
+    </select>
+
+    <select id="querySimpleInfo" resultMap="com.ybinsure.auth.mapper.data.CompanyDOMapper.BaseResultMap">
+        select id, name, level, old_code from auth_company where id in <foreach collection="param" separator="," open="(" close=")" item="item">#{item}</foreach>
+    </select>
+
+</mapper>

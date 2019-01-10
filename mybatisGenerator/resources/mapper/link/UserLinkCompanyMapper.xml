@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.UserLinkCompanyMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="resultMap"
+               type="com.ybinsure.auth.model.link.UserExtend"
+               extends="com.ybinsure.auth.mapper.data.UserDOMapper.BaseResultMap">
+        <collection  property="companyDOS"
+                     ofType="com.ybinsure.auth.model.data.CompanyDO"
+                     resultMap="com.ybinsure.auth.mapper.data.CompanyDOMapper.BaseResultMap"
+                     columnPrefix="c_" />
+    </resultMap>
+
+    <select id="queryById" resultMap="resultMap">
+        select
+          u.*,
+          c.id c_id,
+          c.code c_code,
+          c.old_code c_old_code,
+          c.name c_name,
+          c.province c_province,
+          c.city c_city,
+          c.level c_level,
+          c.channel_code c_channel_code
+        from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        left join auth_company c on uc.company_id = c.id
+        <where>
+            <if test="true">u.id = #{param.id}</if>
+            <if test="true">AND u.deleted = #{param.deleted}</if>
+            <if test="true">and uc.link_type = #{linkType}</if>
+        </where>
+    </select>
+
+</mapper>
