@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.ChannelLinkPermissionMapper">
+
+
+    <select id="queryByChannelCode" resultMap="com.ybinsure.auth.mapper.data.PermissionDOMapper.BaseResultMap">
+        select ap.* from auth_channel ac left join auth_channel_permission acp on ac.id = acp.channel_id
+        left join auth_permission ap on acp.permission_id = ap.id
+        where ac.code = #{channelCode};
+    </select>
+
+</mapper>

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.auto.ChannelDOMapper">
+  <resultMap id="BaseResultMap" type="com.ybinsure.auth.model.data.ChannelDO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="out_code" jdbcType="VARCHAR" property="outCode" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="start_time" jdbcType="BIGINT" property="startTime" />
+    <result column="expire_time" jdbcType="BIGINT" property="expireTime" />
+    <result column="back_up" jdbcType="VARCHAR" property="backUp" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="proxy_channel_code" jdbcType="VARCHAR" property="proxyChannelCode" />
+    <result column="source_type" jdbcType="TINYINT" property="sourceType" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, out_code, code, short_name, full_name, user_name, pass_word, email, contact, 
+    address, start_time, expire_time, back_up, type, proxy_channel_code, source_type, 
+    sort, deleted, update_time, create_time, status
+  </sql>
+  <select id="selectByExample" parameterType="com.ybinsure.auth.model.data.ChannelDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from auth_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auth_channel
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from auth_channel
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybinsure.auth.model.data.ChannelDOExample">
+    delete from auth_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybinsure.auth.model.data.ChannelDO">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      SELECT replace(uuid(), '-', '')
+    </selectKey>
+    insert into auth_channel (id, out_code, code, 
+      short_name, full_name, user_name, 
+      pass_word, email, contact, 
+      address, start_time, expire_time, 
+      back_up, type, proxy_channel_code, 
+      source_type, sort, deleted, 
+      update_time, create_time, status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{outCode,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{shortName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{passWord,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{startTime,jdbcType=BIGINT}, #{expireTime,jdbcType=BIGINT}, 
+      #{backUp,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{proxyChannelCode,jdbcType=VARCHAR}, 
+      #{sourceType,jdbcType=TINYINT}, #{sort,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybinsure.auth.model.data.ChannelDO">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      SELECT replace(uuid(), '-', '')
+    </selectKey>
+    insert into auth_channel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="outCode != null">
+        out_code,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="shortName != null">
+        short_name,
+      </if>
+      <if test="fullName != null">
+        full_name,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="passWord != null">
+        pass_word,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="backUp != null">
+        back_up,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="proxyChannelCode != null">
+        proxy_channel_code,
+      </if>
+      <if test="sourceType != null">
+        source_type,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="outCode != null">
+        #{outCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=BIGINT},
+      </if>
+      <if test="backUp != null">
+        #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyChannelCode != null">
+        #{proxyChannelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceType != null">
+        #{sourceType,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybinsure.auth.model.data.ChannelDOExample" resultType="java.lang.Long">
+    select count(*) from auth_channel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update auth_channel
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outCode != null">
+        out_code = #{record.outCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shortName != null">
+        short_name = #{record.shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fullName != null">
+        full_name = #{record.fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passWord != null">
+        pass_word = #{record.passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contact != null">
+        contact = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.expireTime != null">
+        expire_time = #{record.expireTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.backUp != null">
+        back_up = #{record.backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxyChannelCode != null">
+        proxy_channel_code = #{record.proxyChannelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceType != null">
+        source_type = #{record.sourceType,jdbcType=TINYINT},
+      </if>
+      <if test="record.sort != null">
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update auth_channel
+    set id = #{record.id,jdbcType=VARCHAR},
+      out_code = #{record.outCode,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      short_name = #{record.shortName,jdbcType=VARCHAR},
+      full_name = #{record.fullName,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      pass_word = #{record.passWord,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=BIGINT},
+      expire_time = #{record.expireTime,jdbcType=BIGINT},
+      back_up = #{record.backUp,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      proxy_channel_code = #{record.proxyChannelCode,jdbcType=VARCHAR},
+      source_type = #{record.sourceType,jdbcType=TINYINT},
+      sort = #{record.sort,jdbcType=INTEGER},
+      deleted = #{record.deleted,jdbcType=TINYINT},
+      update_time = #{record.updateTime,jdbcType=BIGINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybinsure.auth.model.data.ChannelDO">
+    update auth_channel
+    <set>
+      <if test="outCode != null">
+        out_code = #{outCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        pass_word = #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=BIGINT},
+      </if>
+      <if test="backUp != null">
+        back_up = #{backUp,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyChannelCode != null">
+        proxy_channel_code = #{proxyChannelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceType != null">
+        source_type = #{sourceType,jdbcType=TINYINT},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybinsure.auth.model.data.ChannelDO">
+    update auth_channel
+    set out_code = #{outCode,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      expire_time = #{expireTime,jdbcType=BIGINT},
+      back_up = #{backUp,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      proxy_channel_code = #{proxyChannelCode,jdbcType=VARCHAR},
+      source_type = #{sourceType,jdbcType=TINYINT},
+      sort = #{sort,jdbcType=INTEGER},
+      deleted = #{deleted,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

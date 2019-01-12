@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomClientMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="clientLinkedFullResultMap"
+               type="com.ybinsure.auth.model.data.ClientDO"
+               extends="com.ybinsure.auth.mapper.auto.ClientDOMapper.BaseResultMap">
+        <collection  property="grantTypes"
+                     ofType="com.ybinsure.auth.model.data.PropertyDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.PropertyDOMapper.BaseResultMap"
+                     columnPrefix="gt_" />
+        <collection  property="resources"
+                     ofType="com.ybinsure.auth.model.data.PropertyDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.PropertyDOMapper.BaseResultMap"
+                     columnPrefix="r_" />
+        <collection  property="scopes"
+                     ofType="com.ybinsure.auth.model.data.PropertyDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.PropertyDOMapper.BaseResultMap"
+                     columnPrefix="s_" />
+    </resultMap>
+
+
+    <select id="queryFullLinkedInfo" resultMap="clientLinkedFullResultMap">
+        select cgtr.*,p.id s_id,p.code s_code,p.value1 s_value1,p.value2 s_value2,p.sort s_sort,p.type_code s_type_code,p.description s_description,p.status s_status
+        from
+            (select cgt.*,p.id r_id,p.code r_code,p.value1 r_value1,p.value2 r_value2,p.sort r_sort,p.type_code r_type_code,p.description r_description,p.status r_status
+                from
+                (select c.*, p.id gt_id, p.code gt_code,p.value1 gt_value1,p.value2 gt_value2,p.sort gt_sort,p.type_code gt_type_code,p.description gt_description,p.status gt_status
+                    from
+                        (select * from auth_client where auth_client.client = #{client}) as c
+                        left join auth_client_grant_type gt on c.id = gt.client_id
+                        left join auth_property p on gt.grant_type_id = p.id) as cgt
+                left join auth_client_resource r on cgt.id = r.client_id
+                left join auth_property p on r.resource_id = p.id) as cgtr
+        left join auth_client_scope s on cgtr.id = s.client_id
+        left join auth_property p on s.scope_id = p.id;
+    </select>
+
+</mapper>

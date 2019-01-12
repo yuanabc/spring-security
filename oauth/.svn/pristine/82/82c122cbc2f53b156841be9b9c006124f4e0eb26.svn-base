@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.extend.ExtendPermissionDOMapper">
+
+    <select id="queryByRoleId" resultMap="com.ybinsure.auth.mapper.data.PermissionDOMapper.BaseResultMap">
+        select p.* from auth_role_permission rp left join auth_permission p
+          on rp.permission_id = p.id
+          where rp.role_id = #{roleId}
+    </select>
+
+</mapper>

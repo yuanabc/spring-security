@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.UserLinkUserRelateCompanyMapper">
+
+    <select id="countUser" resultType="java.lang.Integer">
+        select count(u.id)
+        from auth_user u
+                 inner join auth_user_company uc on u.id = uc.user_id
+        where uc.company_id = #{companyId}
+          and u.deleted = #{deletedStatus};
+    </select>
+
+    <select id="queryLastTokenByTokenNonExpire" resultType="java.lang.String">
+        select u.last_token from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        where uc.company_id = #{companyId} and u.last_token_expire_time > #{now,jdbcType=TIMESTAMP} and u.last_token is not null and u.last_token != ''
+    </select>
+
+</mapper>

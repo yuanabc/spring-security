@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomChannelMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="channelLinkedResultMap"
+               type="com.ybinsure.auth.model.data.ChannelDO"
+               extends="com.ybinsure.auth.mapper.auto.ChannelDOMapper.BaseResultMap">
+        <association property="admin" javaType="com.ybinsure.auth.model.data.UserDO">
+            <id property="id" column="u_id"/>
+            <result property="userName" column="u_user_name"/>
+            <result property="phone" column="u_phone"/>
+            <result property="nickName" column="u_nick_name" />
+            <result property="idNo" column="u_id_no"/>
+            <collection property="roleDOS" ofType="com.ybinsure.auth.model.data.RoleDO">
+                <id property="id" column="r_id"/>
+                <result property="name" column="r_name" />
+            </collection>
+        </association>
+    </resultMap>
+
+    <select id="queryPage" resultMap="com.ybinsure.auth.mapper.auto.ChannelDOMapper.BaseResultMap">
+        select c.* from auth_channel c left join auth_web_config wc on c.code = wc.value left join auth_company com on com.channel_code = c.code
+        <where>
+            <if test="true">c.deleted = ${disable}</if>
+            <if test="param.keyword != null and param.keyword != ''">
+                and (c.short_name like #{param.keyword} or c.out_code like #{param.keyword})
+            </if>
+            <if test="param.model and param.model.startTime != null">
+                and c.create_time >= #{param.model.startTime}
+            </if>
+            <if test="param.model and param.model.endTime != null">
+                <![CDATA[and c.create_time <= #{param.model.endTime}]]>
+            </if>
+            <if test="param.model != null and param.model.status != null">
+                and c.status = #{param.model.status}
+            </if>
+            <if test="param.model != null and param.model.type != null">
+                and c.type = #{param.model.type}
+            </if>
+            <if test="param.model != null and param.model.isBillChannel != null and param.model.isBillChannel == 0">
+                and wc.code = '12' and wc.flag = #{param.model.isBillChannel}
+            </if>
+            <if test="param.model != null and param.model.isBillChannel != null and param.model.isBillChannel == 1">
+                and (wc.code = '12' and wc.flag = #{param.model.isBillChannel} or wc.flag is null or wc.flag = '')
+            </if>
+            <if test="param.model.province != null and param.model.province != ''">
+                and com.channel_head = ${enable} and com.province = #{param.model.province}
+            </if>
+            <if test="param.model.city != null and param.model.city != ''">
+                and com.channel_head = ${enable} and com.city = #{param.model.city}
+            </if>
+        </where>
+        group by c.id
+        order by ${param.model.timeSort}
+    </select>
+
+</mapper>

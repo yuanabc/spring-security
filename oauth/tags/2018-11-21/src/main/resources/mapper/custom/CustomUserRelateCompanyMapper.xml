@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomUserRelateCompanyDOMapper">
+
+    <insert id="insertList" parameterType="com.ybinsure.auth.model.data.UserRelateCompanyDO">
+        insert auth_user_company(id, user_id, company_id, link_type, company_level)
+        values
+        <foreach collection="param" item="item" separator=",">
+            (replace(uuid(), '-', ''), #{item.userId}, #{item.companyId}, #{item.linkType}, #{item.companyLevel})
+        </foreach>
+    </insert>
+
+</mapper>

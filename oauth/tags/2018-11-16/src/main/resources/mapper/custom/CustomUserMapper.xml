@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomUserMapper">
+
+    <resultMap id="userLinkedResultMap"
+               type="com.ybinsure.auth.model.data.UserDO"
+               extends="com.ybinsure.auth.mapper.auto.UserDOMapper.BaseResultMap">
+        <collection  property="companyDOS"
+                     ofType="com.ybinsure.auth.model.data.CompanyDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.CompanyDOMapper.BaseResultMap"
+                     columnPrefix="c_" />
+        <collection  property="userRelateCompanyDOS"
+                     ofType="com.ybinsure.auth.model.data.UserRelateCompanyDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.UserRelateCompanyDOMapper.BaseResultMap"
+                     columnPrefix="uc_" />
+        <collection  property="roleDOS"
+                     ofType="com.ybinsure.auth.model.data.RoleDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.RoleDOMapper.BaseResultMap"
+                     columnPrefix="r_" />
+        <collection  property="permissionDOS"
+                     ofType="com.ybinsure.auth.model.data.PermissionDO"
+                     resultMap="com.ybinsure.auth.mapper.auto.PermissionDOMapper.BaseResultMap"
+                     columnPrefix="p_" />
+    </resultMap>
+
+    <resultMap id="userRoleCountResultMap" type="com.ybinsure.auth.model.transfer.result.UserRoleCount">
+        <result column="urc_role_id" jdbcType="VARCHAR" property="roleId" />
+        <result column="urc_count" jdbcType="INTEGER" property="count" />
+    </resultMap>
+
+    <sql id="userRelateCompanyMap">
+        uc.company_id  uc_company_id,
+        uc.link_type   uc_link_type
+    </sql>
+
+    <sql id="companyMap">
+        c.id           c_id,
+        c.code         c_code,
+        c.old_code     c_old_code,
+        c.name         c_name,
+        c.province     c_province,
+        c.city         c_city,
+        c.level        c_level,
+        c.channel_code c_channel_code,
+        c.company_type c_company_type,
+        c.parent_id    c_parent_id,
+        c.address      c_address
+    </sql>
+
+    <sql id="roleMap">
+        r.id r_id,
+        r.name r_name
+    </sql>
+
+    <sql id="selectUserLinkCompanySql">
+        select u.*,
+               <include refid="userRelateCompanyMap"/>,
+               <include refid="companyMap" />
+        from auth_user u
+                 left join auth_user_company uc on u.id = uc.user_id
+                 left join auth_company c on uc.company_id = c.id
+    </sql>
+
+    <sql id="selectUserLinkCompanyAndLinkRoleSql">
+        select
+        u.*,
+        <include refid="userRelateCompanyMap"/>,
+        <include refid="companyMap" />,
+        <include refid="roleMap" />
+        from auth_user u left join auth_user_company uc on u.id = uc.user_id left join auth_company c on uc.company_id = c.id
+        left join auth_user_role ur on u.id = ur.user_id left join auth_role r on ur.role_id = r.id
+    </sql>
+
+    <select id="queryAnyUser" resultMap="com.ybinsure.auth.mapper.auto.UserDOMapper.BaseResultMap">
+        select * from auth_user where channel_code=#{channelCode} limit 0, 1
+    </select>
+
+    <select id="queryLastNonExpireToken" resultType="java.lang.String">
+      select last_token from auth_user where
+        id in (<foreach collection="ids" item="item" separator=",">#{item}</foreach>) and
+        last_token_expire_time > #{now,jdbcType=TIMESTAMP} and
+        last_token is not null and last_token != ''
+    </select>
+
+    <select id="queryLastNonExpireTokenByChannelCode" resultType="java.lang.String">
+      select last_token from auth_user where
+              channel_code = #{channelCode} and
+              last_token_expire_time > #{now,jdbcType=TIMESTAMP} and
+              last_token is not null and last_token != ''
+    </select>
+
+    <select id="countByCompanyId" resultType="java.lang.Integer">
+        select count(u.id)
+        from auth_user u inner join auth_user_company uc on u.id = uc.user_id
+        where uc.company_id = #{companyId} and u.deleted = ${disable};
+    </select>
+
+    <select id="querySalesIdsByPageParam" resultType="java.lang.String">
+        select
+        u.id
+        from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        <where>
+            <if test="true">
+                u.user_type = ${userTypeSales} and u.deleted = ${disable} and u.id != #{ignoreId}
+            </if>
+            <if test="param.companyIds != null and param.companyIds.size > 0">
+                and uc.company_id in (<foreach collection="param.companyIds" item="item" separator=",">#{item}</foreach>) and uc.link_type = ${companyLinkTypeBelong}
+            </if>
+            <if test="param.channelCode != null and param.channelCode != ''">
+                and u.channel_code = #{param.channelCode}
+            </if>
+            <if test="param.salesType != null and param.salesType.size > 0">
+                and u.sales_type in (<foreach collection="param.salesType" item="item" separator=",">#{item}</foreach>)
+            </if>
+            <if test="param.status != null">
+                and u.status = #{param.status}
+            </if>
+            <if test="param.phone != null and param.phone != ''">
+                and u.user_name like #{param.phone}
+            </if>
+            <if test="param.idName != null and param.idName !=''">
+                and u.id_name like #{param.idName}
+            </if>
+            <if test="param.agentCode != null and param.agentCode != ''">
+                and u.agent_code like #{param.agentCode}
+            </if>
+        </where>
+        group by u.id
+        order by ${param.orderCase}
+    </select>
+
+    <select id="queryUserIdsByPageParam" resultType="java.lang.String">
+        select
+        u.id
+        from auth_user u left join auth_user_company uc on u.id = uc.user_id left join auth_user_role ur on ur.user_id = u.id
+        <where>
+            <if test="true">
+                u.user_type in (${userTypeUser}, ${userTypeAdmin}) and u.deleted = ${disable} and u.id != #{ignoreId}
+            </if>
+            <if test="param.channelCode != null and param.channelCode != ''">
+                and u.channel_code = #{param.channelCode}
+            </if>
+            <if test="param.status != null">
+                and u.status = #{param.status}
+            </if>
+            <if test="param.userName != null and param.userName != ''">
+                and u.user_name like #{param.userName}
+            </if>
+            <if test="param.nickName != null and param.nickName != ''">
+                and u.nick_name like #{param.nickName}
+            </if>
+            <if test="param.companyIds != null and param.companyIds.size > 0">
+                and uc.company_id in (<foreach collection="param.companyIds" item="item" separator=",">#{item}</foreach>) and uc.link_type = ${companyLinkTypeBelong}
+            </if>
+            <if test="param.roleId != null and param.roleId != ''">
+                and ur.role_id = #{param.roleId}
+            </if>
+        </where>
+        group by u.id
+        order by ${param.orderCase}
+    </select>
+
+    <select id="queryUserRoleCountByPageParam" resultMap="userRoleCountResultMap">
+        select
+        ur.role_id urc_role_id,
+        count(u.id) urc_count
+        from auth_user_role ur left join auth_user u on ur.user_id = u.id left join auth_user_company uc on u.id = uc.user_id left join auth_company c on uc.company_id = c.id
+        <where>
+            <if test="true">
+                u.user_type in (${userTypeUser}, ${userTypeAdmin}) and u.deleted = ${disable} and u.id != #{ignoreId}
+            </if>
+            <if test="param.channelCode != null and param.channelCode != ''">
+                and u.channel_code = #{param.channelCode}
+            </if>
+            <if test="param.status != null">
+                and u.status = #{param.status}
+            </if>
+            <if test="param.userName != null and param.userName != ''">
+                and u.user_name like #{param.userName}
+            </if>
+            <if test="param.nickName != null and param.nickName != ''">
+                and u.nick_name like #{param.nickName}
+            </if>
+            <if test="param.companyIds != null and param.companyIds.size > 0">
+                and uc.company_id in (<foreach collection="param.companyIds" item="item" separator=",">#{item}</foreach>) and uc.link_type = ${companyLinkTypeBelong}
+            </if>
+        </where>
+        group by ur.role_id
+    </select>
+
+    <select id="queryUserRoleTotalByPageParam" resultType="java.lang.Integer">
+        select
+        count(distinct u.id)
+        from auth_user_role ur left join auth_user u on ur.user_id = u.id left join auth_user_company uc on u.id = uc.user_id left join auth_company c on uc.company_id = c.id
+        <where>
+            <if test="true">
+                u.user_type in (${userTypeUser}, ${userTypeAdmin}) and u.deleted = ${disable} and u.id != #{ignoreId}
+            </if>
+            <if test="param.channelCode != null and param.channelCode != ''">
+                and u.channel_code = #{param.channelCode}
+            </if>
+            <if test="param.status != null">
+                and u.status = #{param.status}
+            </if>
+            <if test="param.userName != null and param.userName != ''">
+                and u.user_name like #{param.userName}
+            </if>
+            <if test="param.nickName != null and param.nickName != ''">
+                and u.nick_name like #{param.nickName}
+            </if>
+            <if test="param.companyIds != null and param.companyIds.size > 0">
+                and uc.company_id in (<foreach collection="param.companyIds" item="item" separator=",">#{item}</foreach>) and uc.link_type = ${companyLinkTypeBelong}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryLastNonExpireTokenByCompanyId" resultType="java.lang.String">
+        select u.last_token from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        where uc.company_id = #{companyId} and u.last_token_expire_time > #{now,jdbcType=TIMESTAMP} and u.last_token is not null and u.last_token != ''
+    </select>
+
+    <select id="queryUserRelateCompanyAndLinkCompanyByUserNameAndChannelCode" resultMap="userLinkedResultMap">
+        <include refid="selectUserLinkCompanySql" />
+        <where>
+            <if test="true">u.user_name = #{userName} and u.status = ${enable} and u.deleted = ${disable}</if>
+            <if test="channelCode != null and channelCode != ''">and u.channel_code = #{channelCode}</if>
+        </where>
+    </select>
+
+    <select id="countDisableCompanyById" resultType="java.lang.Integer">
+        select count(co.id) from auth_user_company uc left join auth_company co on co.id = uc.company_id
+        where uc.user_id = #{id} and (co.status = ${enable} or co.deleted = ${disable});
+    </select>
+
+    <select id="queryUserLinkCompanyByIds" resultMap="userLinkedResultMap">
+        <include refid="selectUserLinkCompanySql" />
+        where u.id in <foreach collection="ids" item="item" separator="," open="(" close=")">#{item}</foreach> and u.deleted = ${disable}
+    </select>
+
+    <select id="queryUserLinkCompanyAndLinkRoleByIds" resultMap="userLinkedResultMap">
+        <include refid="selectUserLinkCompanyAndLinkRoleSql" />
+        where u.id in <foreach collection="ids" item="item" separator="," open="(" close=")">#{item}</foreach> and u.deleted = ${disable}
+    </select>
+
+    <select id="queryUserLinkCompanyByAgentCode" resultMap="userLinkedResultMap">
+        <include refid="selectUserLinkCompanySql" />
+        where u.agent_code = #{agentCode} and u.channel_code = #{channelCode} and u.deleted = ${disable}
+        order by c.level
+    </select>
+
+    <select id="queryUserByCompanyIdsAndUserTypes" resultMap="com.ybinsure.auth.mapper.auto.UserDOMapper.BaseResultMap">
+        select u.* from auth_user_company uc left join auth_user u on uc.user_id = u.id where
+        uc.company_id in
+        <foreach collection="companyIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and u.user_type in
+        <foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and u.deleted = ${disable}
+    </select>
+
+</mapper>

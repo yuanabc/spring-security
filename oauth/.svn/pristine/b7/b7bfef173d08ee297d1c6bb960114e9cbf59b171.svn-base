@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomRoleRelatePermissionDOMapper">
+
+    <insert id="insertList" parameterType="com.ybinsure.auth.model.data.RoleRelatePermissionDO">
+        insert auth_role_permission(id, role_id, permission_id) values
+        <foreach collection="param" item="item" separator=",">
+            (replace(uuid(), '-', ''), #{item.roleId},#{item.permissionId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRelatePermission">
+        delete from auth_role_permission
+        where id in
+        (select temp.id
+        from (select rp.id
+        from auth_role r left join auth_role_permission rp on r.id = rp.role_id
+        <where>
+            <if test="true">r.channel_code = #{channelCode}</if>
+            <if test="permissionIds != null">AND rp.permission_id not in <foreach collection="permissionIds" item="item" separator="," open="(" close=")">#{item}</foreach></if>
+        </where>)
+        as temp)
+    </delete>
+
+    <select id="countUserRelatePermission" resultType="java.lang.Integer">
+        select count(rp.id)
+        from auth_role r left join auth_role_permission rp on r.id = rp.role_id
+        <where>
+            <if test="true">r.channel_code = #{channelCode}</if>
+            <if test="permissionIds != null">AND rp.permission_id not in <foreach collection="permissionIds" item="item" separator="," open="(" close=")">#{item}</foreach></if>
+        </where>
+    </select>
+
+</mapper>

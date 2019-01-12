@@ -1,0 +1,30 @@
+# project
+server.context-path=/oauth
+server.port=18069
+spring.http.encoding.charset=UTF-8
+#spring.profiles.active=dev
+
+# mybatis
+mybatis.mapper-locations=classpath:mapper/**/*.xml
+mybatis.configuration.default-statement-timeout=30
+mybatis.configuration-properties.enable=0
+mybatis.configuration-properties.disable=1
+#pagehelper
+pagehelper.helperDialect=mysql
+pagehelper.reasonable=true
+pagehelper.supportMethodsArguments=true
+pagehelper.params=count=countSql
+
+
+# nid
+nid.datacenterId=1
+nid.machineId=1
+
+# send message
+send.message.url=http://yunpian.com/v1/sms/send.json
+send.message.key=44329cb65220308bc9afc7059ed3bd81
+
+default.password=87aee03dc1b08b90cb22ee7993a04905
+
+security.oauth2.resource.filter-order= 3
+

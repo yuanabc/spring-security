@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomPermissionDOMapper">
+
+    <select id="queryByRoleId" resultMap="com.ybinsure.auth.mapper.auto.PermissionDOMapper.BaseResultMap">
+        select p.*
+        from auth_role_permission rp
+                 left join auth_permission p on rp.permission_id = p.id
+        where rp.role_id = #{roleId}
+    </select>
+
+    <select id="queryByUserId" resultMap="com.ybinsure.auth.mapper.auto.PermissionDOMapper.BaseResultMap"
+            parameterType="com.ybinsure.auth.model.data.UserDO">
+        select p.*
+        from auth_user_role ur
+                 left join auth_role r on r.id = ur.role_id
+                 left join auth_role_permission rp on rp.role_id = ur.role_id
+                 left join auth_permission p on p.id = rp.permission_id
+        WHERE ur.user_id = #{userId}
+          and r.deleted = ${disable}
+          and r.status = ${enable}
+    </select>
+
+</mapper>

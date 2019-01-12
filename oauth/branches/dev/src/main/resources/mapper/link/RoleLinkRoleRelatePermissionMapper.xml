@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.RoleLinkRoleRelatePermissionMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="roleLinkedPermissionResultMap"
+               type="com.ybinsure.auth.model.link.RoleExtend"
+               extends="com.ybinsure.auth.mapper.data.RoleDOMapper.BaseResultMap">
+        <collection  property="roleRelatePermissionDOS"
+                     ofType="com.ybinsure.auth.model.data.RoleRelatePermissionDO"
+                     resultMap="com.ybinsure.auth.mapper.data.RoleRelatePermissionDOMapper.BaseResultMap"
+                     columnPrefix="rp_" />
+    </resultMap>
+
+    <select id="query" resultMap="roleLinkedPermissionResultMap">
+        select
+          r.*,
+          rp.permission_id rp_permission_id
+        from auth_role r left join auth_role_permission rp on r.id = rp.role_id
+        where r.id = #{id}
+    </select>
+
+    <delete id="deleteUserRelatePermission">
+        delete from auth_role_permission
+            where id in
+                (select temp.id
+                from (select rp.id
+                from auth_role r left join auth_role_permission rp on r.id = rp.role_id
+                <where>
+                     <if test="true">r.channel_code = #{channelCode}</if>
+                     <if test="permissionIds != null">AND rp.permission_id not in <foreach collection="permissionIds" item="item" separator="," open="(" close=")">#{item}</foreach></if>
+                 </where>)
+                 as temp)
+    </delete>
+
+    <select id="countUserRelatePermission" resultType="java.lang.Integer">
+        select count(rp.id)
+        from auth_role r left join auth_role_permission rp on r.id = rp.role_id
+        <where>
+            <if test="true">r.channel_code = #{channelCode}</if>
+            <if test="permissionIds != null">AND rp.permission_id not in <foreach collection="permissionIds" item="item" separator="," open="(" close=")">#{item}</foreach></if>
+        </where>
+    </select>
+
+</mapper>

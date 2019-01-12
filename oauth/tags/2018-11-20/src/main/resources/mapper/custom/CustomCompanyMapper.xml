@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.custom.CustomCompanyDOMapper">
+
+    <select id="queryAll" resultMap="com.ybinsure.auth.mapper.auto.CompanyDOMapper.BaseResultMap">
+      select com.*
+      from auth_channel ch
+               inner join auth_company com on com.channel_code = ch.code
+      where ch.status = ${enable}
+        and ch.deleted = ${disable}
+        and com.deleted = ${disable}
+      order by com.code asc
+    </select>
+
+    <select id="queryLastSortedCompanyByParentId" resultMap="com.ybinsure.auth.mapper.auto.CompanyDOMapper.BaseResultMap">
+        select *
+        from auth_company
+        where parent_id = #{parentId}
+        order by sort desc
+        limit 1
+    </select>
+
+    <select id="queryAfterSortedCompanyById" resultMap="com.ybinsure.auth.mapper.auto.CompanyDOMapper.BaseResultMap">
+        select *
+        from auth_company c
+                 left join (select sort, parent_id from auth_company where id = #{id}) as self
+                     on c.parent_id = self.parent_id
+        where c.sort >= self.sort
+        order by c.sort
+        limit 2
+    </select>
+
+    <select id="queryBeforeSortedCompanyById" resultMap="com.ybinsure.auth.mapper.auto.CompanyDOMapper.BaseResultMap">
+        select *
+        from auth_company c
+                 left join (select sort, parent_id from auth_company where id = #{id}) as self
+                     on c.parent_id = self.parent_id
+        where <![CDATA[ c.sort <= self.sort ]]>
+        order by c.sort desc
+        limit 2
+    </select>
+
+</mapper>

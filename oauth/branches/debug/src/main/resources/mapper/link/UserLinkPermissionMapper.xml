@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.UserLinkPermissionMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="userLinkedResultMap"
+               type="com.ybinsure.auth.model.link.UserExtend"
+               extends="com.ybinsure.auth.mapper.data.UserDOMapper.BaseResultMap">
+        <collection  property="permissionDOS"
+                     ofType="com.ybinsure.auth.model.data.PermissionDO"
+                     resultMap="com.ybinsure.auth.mapper.data.PermissionDOMapper.BaseResultMap"
+                     columnPrefix="p_" />
+    </resultMap>
+
+    <select id="queryByUserName" resultMap="userLinkedResultMap" parameterType="com.ybinsure.auth.model.data.UserDO">
+         select u.id, u.user_name, u.phone, u.password, u.user_type, u.nick_name, u.id_name, u.channel_code, u.status, u.deleted
+            from auth_user u left join auth_channel ch on ch.code = u.channel_code
+            <where>
+                <if test="true">u.user_name = #{param.userName} and u.status = #{param.status} and u.deleted = #{param.deleted} and ch.status = #{param.status} and ch.deleted = #{param.deleted}</if>
+                <if test="param.channelCode != null">and u.channel_code = #{param.channelCode}</if>
+            </where>
+    </select>
+
+    <select id="queryByUserId" resultMap="com.ybinsure.auth.mapper.data.PermissionDOMapper.BaseResultMap" parameterType="com.ybinsure.auth.model.data.UserDO">
+        select
+          id,
+          name,
+          code,
+          parent_id
+        from auth_permission
+        where id in
+            (select rp.permission_id
+                from auth_user_role ur left join auth_role r on r.id = ur.role_id
+                left join auth_role_permission rp on rp.role_id = ur.role_id
+                WHERE ur.user_id = #{param.id} and r.deleted = #{param.deleted} and r.status = #{param.status});
+    </select>
+
+</mapper>

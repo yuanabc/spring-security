@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.link.UserLinkedMapper">
+
+    <!--结果嵌套map-->
+    <resultMap id="userLinkedResultMap"
+               type="com.ybinsure.auth.model.link.UserExtend"
+               extends="com.ybinsure.auth.mapper.data.UserDOMapper.BaseResultMap">
+        <collection  property="companyDOS"
+                     ofType="com.ybinsure.auth.model.data.CompanyDO"
+                     resultMap="com.ybinsure.auth.mapper.data.CompanyDOMapper.BaseResultMap"
+                     columnPrefix="c_" />
+        <collection  property="roleDOS"
+                     ofType="com.ybinsure.auth.model.data.RoleDO"
+                     resultMap="com.ybinsure.auth.mapper.data.RoleDOMapper.BaseResultMap"
+                     columnPrefix="r_" />
+    </resultMap>
+
+    <!--查询用户表数据-->
+    <sql id="queryUserSql">
+      (
+        select * from auth_user
+        <where>
+            <if test="true">deleted = #{param.deleted}</if>
+            <if test="true">AND user_type in <foreach collection="param.userTypes" item="item" index="index" open="(" separator="," close=")">#{item}</foreach></if>
+            <if test="param.id != null">AND id != #{param.id}</if>
+            <if test="param.channelCode != null">AND channel_code=#{param.channelCode}</if>
+            <if test="param.salesType != null">AND sales_type = #{param.salesType}</if>
+            <if test="param.userName != null">And user_name like #{param.userName}</if>
+            <if test="param.phone != null">And phone like #{param.phone}</if>
+            <if test="param.nickName != null">And nick_name like #{param.nickName}</if>
+            <if test="param.idName != null">And id_name like #{param.idName}</if>
+            <if test="param.agentCode != null">And agent_code like #{param.agentCode}</if>
+            <if test="param.defaultManagerCompany != null">And default_manager_company = #{param.defaultManagerCompany}</if>
+            <if test="param.status != null">AND status=#{param.status}</if>
+        </where>
+        ) as u
+    </sql>
+
+    <!--按条件查询个人业务员id数据-->
+    <select id="querySalesIdWithPage" resultType="java.lang.String" parameterType="com.ybinsure.auth.model.transfer.param.UserLinkedQueryWithPageParam">
+        select u.id from
+        <include refid="queryUserSql" />
+        left join auth_user_company uc on u.id = uc.user_id
+        <where>
+            <if test="param.companyIds != null"> AND uc.company_id in <foreach collection="param.companyIds" item="item" index="index" open="(" separator="," close=")">#{item}</foreach> </if>
+            <if test="param.linkType != null"> AND uc.link_type = #{param.linkType}</if>
+        </where>
+        group by u.id
+        <if test="param.orderCase != null">
+            order by ${param.orderCase}
+        </if>
+    </select>
+
+    <!--按条件查询渠道业务员id数据-->
+    <select id="queryChannelSalesIdWithPage" resultType="java.lang.String" parameterType="com.ybinsure.auth.model.transfer.param.UserLinkedQueryWithPageParam">
+        select u.id from
+        <include refid="queryUserSql" />
+        left join auth_user_company uc on u.id = uc.user_id
+        left join auth_sales_channel_permission scp on scp.user_id = u.id
+        <where>
+            <if test="param.companyIds != null"> AND uc.company_id in <foreach collection="param.companyIds" item="item" index="index" open="(" separator="," close=")">#{item}</foreach> </if>
+            <if test="param.linkType != null"> AND uc.link_type = #{param.linkType}</if>
+            <if test="param.salesChannelCode != null">AND scp.sale_channel_code = #{param.salesChannelCode}</if>
+        </where>
+        group by u.id
+        <if test="param.orderCase != null">
+            order by ${param.orderCase}
+        </if>
+    </select>
+
+    <!--根据业务员Id查询业务员数据-->
+    <select id="querySalesById" resultMap="userLinkedResultMap">
+        select
+        u.id,
+        u.code,
+        u.user_name,
+        u.nick_name,
+        u.sex,
+        u.id_name,
+        u.phone,
+        u.agent_code,
+        u.user_type,
+        u.sales_type,
+        u.default_manager_company,
+        u.description,
+        u.status,
+        u.channel_code,
+        u.update_time,
+        u.create_time,
+        c.id c_id,
+        c.name c_name,
+        c.level c_level
+        from
+        auth_user u
+        left join auth_user_company uc on u.id = uc.user_id
+        left join auth_company c on c.id = uc.company_id
+        where u.id in <foreach collection="ids" item="item" open="(" separator="," close=")">#{item}</foreach>
+        <if test="orderCase != null">
+            order by ${orderCase}
+        </if>
+    </select>
+
+    <!--根据条件查询admin和人员信息-->
+    <select id="queryUserIdWithPage" resultType="java.lang.String" parameterType="com.ybinsure.auth.model.transfer.param.UserLinkedQueryWithPageParam">
+        select u.id from
+        <include refid="queryUserSql" />
+        left join auth_user_company uc on u.id = uc.user_id
+        left join auth_user_role ur  on ur.user_id = u.id
+        left join auth_role r on r.id = ur.role_id
+        <where>
+            <if test="param.roleId != null">And ur.role_id = #{param.roleId}</if>
+            <if test="param.companyIds != null"> AND uc.company_id in <foreach collection="param.companyIds" item="item" index="index" open="(" separator="," close=")">#{item}</foreach> </if>
+            <if test="param.linkType != null"> AND uc.link_type like #{param.linkType}</if>
+        </where>
+        group by u.id
+        <if test="param.orderCase != null">
+            order by ${param.orderCase}
+        </if>
+    </select>
+
+    <select id="queryUserById" resultMap="userLinkedResultMap">
+        select
+            u.id,
+            u.code,
+            u.user_name,
+            u.nick_name,
+            u.sex,
+            u.id_name,
+            u.phone,
+            u.agent_code,
+            u.user_type,
+            u.sales_type,
+            u.default_manager_company,
+            u.description,
+            u.status,
+            u.channel_code,
+            u.update_time,
+            u.create_time,
+            c.id c_id,
+            c.name c_name,
+            c.level c_level,
+            r.id r_id,
+            r.name r_name
+        from
+        auth_user u
+        left join auth_user_company uc on u.id = uc.user_id
+        left join auth_company c on c.id = uc.company_id
+        left join auth_user_role ur  on ur.user_id = u.id
+        left join auth_role r on r.id = ur.role_id
+        where u.id in <foreach collection="ids" item="item" open="(" separator="," close=")">#{item}</foreach>
+        <if test="orderCase != null">
+            order by ${orderCase}
+        </if>
+    </select>
+
+
+    <sql id="queryVirtualSalesSql">
+        select
+          u.id,
+          u.code,
+          u.user_name,
+          u.nick_name,
+          u.sex,
+          u.id_name,
+          u.phone,
+          u.agent_code,
+          u.user_type,
+          u.sales_type,
+          u.default_manager_company,
+          u.description,
+          u.status,
+          u.channel_code,
+          u.update_time,
+          u.create_time,
+          c.id c_id,
+          c.name c_name,
+          c.level c_level
+        from auth_user u left join auth_user_company uc on u.id = uc.user_id
+        left join auth_company c on c.id = uc.company_id
+    </sql>
+
+    <select id="queryVirtualSales" resultMap="userLinkedResultMap">
+        <include refid="queryVirtualSalesSql"/>
+        WHERE u.channel_code=#{channelCode} and u.sales_channel_code=#{salesChannelCode}
+    </select>
+
+    <select id="countUserCompanyByNonStatus" resultType="java.lang.Integer">
+        select count(co.id) from
+        auth_user_company uc left join auth_company co on co.id = uc.company_id
+        where uc.user_id = #{id} and (co.status = #{nonCompanyStatus} or co.deleted = #{nonCompanyDeleted});
+    </select>
+
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="C:\Users\eric\.m2\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+
+    <context id="default" targetRuntime="Mybatis3">
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin" />
+        <!--去除注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://120.27.21.67:13307/icar3?useSSL=false"
+                        userId="icar"
+                        password="cxMysql161110ZJKJ">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--本服务实体类-->
+        <javaModelGenerator targetPackage="com.ybinsure.auth.model.data" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="auto"  targetProject="src/main/resources/mapper">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ybinsure.auth.mapper.auto" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--<table tableName="auth_property" domainObjectName="PropertyDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BasePropertyDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_property_type" domainObjectName="PropertyTypeDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BasePropertyTypeDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client" domainObjectName="ClientDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseClientDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_grant_type" domainObjectName="ClientRelateGrantTypesDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseClientRelateGrantTypesDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_resource" domainObjectName="ClientRelateResourceDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseClientRelateResourceDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_client_scope" domainObjectName="ClientRelateScopeDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseClientRelateScopeDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_channel" domainObjectName="ChannelDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseChannelDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_district" domainObjectName="DistrictDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseDistrictDO"/>-->
+        <!--</table>-->
+        <!--<table tableName="auth_user" domainObjectName="UserDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseUserDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_user_company" domainObjectName="UserRelateCompanyDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseUserRelateCompanyDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_role" domainObjectName="RoleDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseRoleDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_user_role" domainObjectName="UserRelateRoleDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseUserRelateRoleDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_permission" domainObjectName="PermissionDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BasePermissionDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_role_permission" domainObjectName="RoleRelatePermissionDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseRoleRelatePermissionDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_sales_channel" domainObjectName="SalesChannelDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_policy_area" domainObjectName="PolicyAreaDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BasePolicyAreaDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_company" domainObjectName="CompanyDO">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseCompanyDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+        <!--<table tableName="auth_web_config" domainObjectName="WebConfigDo">-->
+            <!--<property name="rootClass" value="com.ybinsure.auth.model.data.base.BaseWebConfigDO"/>-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+
+        <!--<table tableName="issue_company" domainObjectName="IssueCompany">-->
+        <!--</table>-->
+        <!--<table tableName="issue_user" domainObjectName="IssueUser">-->
+        <!--</table>-->
+        <!--<table tableName="issue_user_company" domainObjectName="IssueUserCompany">-->
+        <!--</table>-->
+        <!--<table tableName="issue_agent" domainObjectName="IssueAgent">-->
+        <!--</table>-->
+        <!--<table tableName="auth_user_copy" domainObjectName="AuthUserCopy">-->
+        <!--</table>-->
+
+
+        <!--finnace服务实体类-->
+        <!--<javaModelGenerator targetPackage="com.ybinsure.auth.model.request.finance" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+            <!--<property name="trimStrings" value="true" />-->
+        <!--</javaModelGenerator>-->
+        <!--<table tableName="finance_channel_balance" domainObjectName="ChannelBalanceDO">-->
+            <!--<generatedKey column="id" sqlStatement="SELECT replace(uuid(), '-', '')" />-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

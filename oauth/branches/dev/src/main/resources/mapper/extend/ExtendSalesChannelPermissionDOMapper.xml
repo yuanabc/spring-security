@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybinsure.auth.mapper.extend.ExtendSalesChannelPermissionDOMapper">
+
+    <insert id="insertList" parameterType="com.ybinsure.auth.model.data.SalesChannelPermissionDO">
+        insert auth_sales_channel_permission(id, user_id, sale_channel_code, permission_id, create_time)
+        values <foreach collection="param" item="item" separator=",">
+                (replace(uuid(), '-', ''), #{item.userId}, #{item.saleChannelCode}, #{item.permissionId}, #{item.createTime})
+            </foreach>
+    </insert>
+
+</mapper>
